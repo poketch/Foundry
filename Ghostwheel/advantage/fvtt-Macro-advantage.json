@@ -1,0 +1,22 @@
+{
+  "name": "advantage",
+  "type": "script",
+  "author": "4ft25hP617oXIBoS",
+  "img": "icons/svg/dice-target.svg",
+  "scope": "global",
+  "command": "if (args[0].tag === 'OnUse'){\n   \n    const attack_name = \"Dagger (test)\" \n\n\n    const workflow = MidiQOL.Workflow.getWorkflow(args[0].uuid)\n\n    if (workflow.item.data.name == attack_name){\n        \n        const tactor = workflow.actor;\n        workflow.advantage = \"true\";\n   }\n}",
+  "flags": {
+    "combat-utility-belt": {
+      "macroTrigger": ""
+    },
+    "advanced-macros": {
+      "runAsGM": false
+    },
+    "exportSource": {
+      "world": "ddf-friends-characters",
+      "system": "dnd5e",
+      "coreVersion": "9.249",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

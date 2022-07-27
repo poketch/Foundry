@@ -1,0 +1,19 @@
+{
+  "name": "ring_healing",
+  "type": "script",
+  "author": "4ft25hP617oXIBoS",
+  "img": "icons/svg/dice-target.svg",
+  "scope": "global",
+  "command": "let messageList = game.messages.filter(i => i.data.speaker.alias == \"Ira\" && i.data.flavor === \"Clawed Grip - Retaliation\")\n\nif (messageList[messageList.length - 1].data.content.includes(\"fails\")) \n{\nlet dmgRoll = messageList[messageList.length - 1].data.flags[\"midi-qol\"].damageTotal\n\nlet ira = canvas.tokens.placeables.filter(i => i.data.name == \"Ira\")[0].actor\nlet newHp = Math.min(ira.data.data.attributes.hp.value + dmgRoll, ira.data.data.attributes.hp.max)\nira.update({'data.attributes.hp.value' : newHp})\n}\nconsole.log(\"ring_healing executed\")\n\n// console.log(messageList[messageList.length - 1])",
+  "flags": {
+    "advanced-macros": {
+      "runAsGM": false
+    },
+    "exportSource": {
+      "world": "ddf-friends-characters",
+      "system": "dnd5e",
+      "coreVersion": "9.249",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

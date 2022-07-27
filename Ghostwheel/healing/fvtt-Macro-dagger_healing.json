@@ -1,0 +1,22 @@
+{
+  "name": "dagger_healing",
+  "type": "script",
+  "author": "4ft25hP617oXIBoS",
+  "img": "icons/svg/dice-target.svg",
+  "scope": "global",
+  "command": "if (args[0].tag === 'OnUse') {\n    if (args[0].hitTargets.length < 1) return\n    \n    const attack_name = \"Dagger (test)\"\n    const healing_amt = \"1d4\"\n\n\n    const sourceToken = await fromUuid(args[0].tokenUuid);\n    const source = sourceToken.actor;\n\n    let messageList = game.messages.filter(i => i.data.speaker.alias == source.name && i.data.flavor === attack_name)\n    const workflow = MidiQOL.Workflow.getWorkflow(messageList[messageList.length - 1].data.flags['midi-qol'].workflowId)\n\n    if (messageList[messageList.length - 1].data.content.includes(\"hits\")) \n    {\n        let hpRoll = await new Roll(healing_amt).evaluate({ async : true})\n        \n        new MidiQOL.DamageOnlyWorkflow(workflow.actor, workflow.token, hpRoll.total, \"healing\", workflow.actor ? [workflow.actor] : [], hpRoll, {flavor: `${attack_name} healing`, itemCardId: workflow.itemCardId})\n\n        let newHp = Math.min(source.data.data.attributes.hp.value + hpRoll.total, \n        source.data.data.attributes.hp.max)\n        source.update({'data.attributes.hp.value' : newHp})\n    }\n    console.log(\"dagger_healing executed\")\n}",
+  "flags": {
+    "combat-utility-belt": {
+      "macroTrigger": ""
+    },
+    "advanced-macros": {
+      "runAsGM": false
+    },
+    "exportSource": {
+      "world": "ddf-friends-characters",
+      "system": "dnd5e",
+      "coreVersion": "9.249",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
