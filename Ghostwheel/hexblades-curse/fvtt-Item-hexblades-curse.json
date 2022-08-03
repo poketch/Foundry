@@ -1,0 +1,234 @@
+{
+  "name": "Hexblade's Curse",
+  "type": "feat",
+  "img": "icons/magic/perception/hand-eye-pink.webp",
+  "data": {
+    "description": {
+      "value": "",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "bonus",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "minute"
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 30,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "per": "sr"
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    },
+    "attunement": null
+  },
+  "effects": [
+    {
+      "_id": "cgqN9sXTm5ls4hOV",
+      "changes": [
+        {
+          "key": "flags.dae.onUpdateSource",
+          "mode": 0,
+          "value": "Hexblade's Curse",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 60
+      },
+      "icon": "icons/magic/unholy/barrier-fire-pink.webp",
+      "label": "Marked",
+      "origin": "Item.l3VxRGZ3t01MFW5b",
+      "tint": null,
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "zeroHP"
+          ],
+          "transfer": false,
+          "durationExpression": "",
+          "selfTarget": false
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "radius": null,
+          "aura": "None",
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "displayTemp": false
+        },
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "effectmacro": {
+          "onDelete": {
+            "script": "console.log(\"Effect Macro args\")\nconsole.log('actor:',actor)\nconsole.log('token:',token)\nconsole.log('character:',character)\nconsole.log('origin:',origin)\nconsole.log('effect:',effect)\nconsole.log('scene:',scene)\n\nif(origin.parent.uuid === token.actor.uuid) {\n\tconsole.log(\"on source\")\n\treturn {};\n}\n//if (token.actor.getRollData().attributes.hp.value == 0) {\n\tconst theActor = origin.parent.uuid\n\tlet actorD;\n\tif (theActor.split('.')[0] === 'Actor') {\n\t\tconsole.log('got a linked token')\n\t\tactorD = await game.actors.get(theActor.split('.')[1])\n\t}\n\telse {\n\t\tlet tokenD = await fromUuid(theActor)\n\t\tlet actorD = tokenD.actor\n\t\tif(actorD.type===\"npc\") {\n\t\t\tawait actorD.update({'data.attributes.hp.value': actorD.getRollData().attributes.hp.value+actorD.getRollData().details.cr+actorD.getRollData().abilities.cha.mod});\n\t\t \treturn {};\n\t\t}\n\t}\n\tawait actorD.update({'data.attributes.hp.value': actorD.getRollData().attributes.hp.value+actorD.getRollData().classes.warlock.levels+actorD.getRollData().abilities.cha.mod})"
+          },
+          "data": {
+            "lastUpdated": "onDelete"
+          }
+        }
+      },
+      "selectedKey": "flags.dae.onUpdateSource"
+    },
+    {
+      "_id": "DsY5GqQ3tKQb2oVW",
+      "changes": [
+        {
+          "key": "flags.dnd5e.DamageBonusMacro",
+          "mode": 0,
+          "value": "ItemMacro.Hexblade's Curse",
+          "priority": "20"
+        },
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "ItemMacro.Hexblade's Curse,all",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "icons/magic/perception/hand-eye-pink.webp",
+      "label": "Hexblade's Curse",
+      "origin": "Item.l3VxRGZ3t01MFW5b",
+      "tint": null,
+      "transfer": true,
+      "flags": {
+        "core": {
+          "statusId": ""
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true,
+          "selfTarget": false
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        }
+      },
+      "selectedKey": [
+        "flags.dnd5e.DamageBonusMacro",
+        "flags.midi-qol.onUseMacroName"
+      ]
+    }
+  ],
+  "flags": {
+    "siftoolkit": {
+      "SIFData": {
+        "ignoreDuration": false,
+        "texture": "",
+        "useTexture": false,
+        "alpha": 50,
+        "coneOrigin": 1,
+        "loopAnimations": true,
+        "playTemplateAudio": false,
+        "playDamageAudio": false,
+        "playSaveAudio": false,
+        "clip": "",
+        "volume": 100
+      }
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "CurseMe",
+          "type": "script",
+          "author": "oKTPW6AHSqX8CsNe",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "let used = getProperty(token.actor.data.flags['midi-qol'],'hexBlade.used')\nif (args[0].tag === \"DamageBonus\" && !used) {\n    await setProperty(token.actor.data.flags['midi-qol'],'hexBlade.used', true)\n    if (actor.data?.flags?.dae?.onUpdateTarget && args[0].hitTargets.length > 0) {\n\t    const isMarked = actor.data.flags.dae.onUpdateTarget.find(flag => flag.flagName === \"Hexblade's Curse\" && flag.sourceTokenUuid === args[0].hitTargets[0].uuid);\n\t    if (isMarked) {\n\t        let damageType = args[0].item.data.damage.parts[0][1];\n\t        return {damageRoll: `@prof[${damageType}]`, flavor: \"Hexblade's Curse damage\"};\n\t    }\t\n    }\n    return {};\n}\n\nif (args[0].macroPass === \"preItemRoll\") {\n    let workflow = await MidiQOL.Workflow.getWorkflow(args[0].uuid)\n    if (actor.data?.flags?.dae?.onUpdateTarget && args[0].targets.length > 0) {\n\t    const isMarked = actor.data.flags.dae.onUpdateTarget.find(flag => flag.flagName === \"Hexblade's Curse\" && flag.sourceTokenUuid === args[0].targets[0].uuid);\n\t    if (isMarked) {\n\t        let itemD = workflow.item\n\t        await setProperty(token.actor.data.flags['midi-qol'], 'hexBlade.threshold', itemD.data.data.critical.threshold)\n\t        itemD.data.data.critical.threshold = 19;\n\t    }\n    }\n}\nif (args[0].macroPass === \"postAttackRoll\") {\n    let workflow = await MidiQOL.Workflow.getWorkflow(args[0].uuid)\n    let itemD = workflow.item\n    itemD.data.data.critical.threshold = getProperty(token.actor.data.flags, 'midi-qol.criticalthresholdItem');\n    await token.actor.unsetFlag('midi-qol','hexBlade')\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Item.l3VxRGZ3t01MFW5b"
+    },
+    "exportSource": {
+      "world": "fr-myths-and-shadows",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.3"
+    }
+  }
+}
