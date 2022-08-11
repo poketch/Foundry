@@ -3,11 +3,14 @@
 
 ### Lion's Roar (Novice, Strike, Prowess)
     
-    *As you strike a foe you unleash a howl that exhilarates and inspires your allies.*
+*As you strike a foe you unleash a howl that exhilarates and inspires your allies.*
 
-    Make an melee weapon attack; if you hit, you deal your normal damage and 2d6 additional damage. In addition, if you hit, the first successful attack that each ally makes against the target deals 1d6 additional damage until the start of your next turn.
+Make an melee weapon attack; if you hit, you deal your normal damage and 2d6 additional damage.
+In addition, if you hit, the first successful attack that each ally makes against the target deals 1d6 additional damage until the start of your next turn.
 
 Created by Ghostwheel#0698
+
+---
 
 # Usage
 
