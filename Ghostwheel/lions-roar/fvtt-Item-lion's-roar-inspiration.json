@@ -1,0 +1,156 @@
+{
+  "name": "Lion's Roar - Inspiration",
+  "type": "feat",
+  "img": "icons/svg/item-bag.svg",
+  "data": {
+    "description": {
+      "value": "",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [
+    {
+      "_id": "ud1vycydnbakty93",
+      "changes": [
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "0",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "rounds": 1,
+        "startTime": null
+      },
+      "icon": "icons/svg/item-bag.svg",
+      "label": "Lion's Roar - Inspiration",
+      "origin": "Actor.xk4FgV1Ja3N3zGqI.Item.D5G9yifxV3mI30I3",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "turnStartSource",
+            "1Hit:mwak",
+            "1Hit:rwak",
+            "1Hit:rsak",
+            "1Hit:mwak"
+          ],
+          "transfer": false
+        },
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        }
+      },
+      "tint": "#000000",
+      "selectedKey": "macro.itemMacro"
+    }
+  ],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Lion's Roar - Inspiration",
+          "type": "script",
+          "author": "4ft25hP617oXIBoS",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "if (args[0] === \"off\" && args[2]['expiry-reason']?.includes(\"1Hit\"))\n{\nconsole.log(args)\n    const feature_name = \"Lion's Roar - Marked\"\n    let damage = \"1d6\"\n\n    const message_list = game.messages.filter(i => i.data.flags['midi-qol'])\n    const last_message = message_list[message_list.length - 1]\n    const workflow = MidiQOL.Workflow.getWorkflow(last_message.data.flags['midi-qol'].workflowId)\n    const current_target = Array.from(workflow.targets)[0].actor\n    const target_effects = Array.from(current_target.effects)\n\n    if (target_effects.some((effect) => effect.data.label === feature_name))\n    {\n        if (workflow.isCritical === true) {damage = \"2d6\"}\n        damage_roll = await new Roll(damage).evaluate({async : true})\n        new MidiQOL.DamageOnlyWorkflow(workflow.actor, workflow.token, damage_roll.total, workflow.damageDetail[0].type, current_target ? [current_target] : [], damage_roll, {flavor: \"Lion's Roar - Inspiration\", itemCardId: workflow.itemCardId})\n\n        let damage_total =  damage_roll.total + workflow.damageDetail[0].damage\n        if (current_target.data.data.traits.dr.value.includes(workflow.damageDetail[0].type))\n        {\n            damage_total = Math.floor(damage_total/2)\n        }\n        \n        const newHp = Math.max(current_target.data.data.attributes.hp.value - damage_total, 0)\n        current_target.update({'data.attributes.hp.value' : newHp})\n    }\n    else\n    {\n        const item_owner = game.canvas.tokens.placeables.filter(i => i.actor.items.getName(\"Lion's Roar - Inspiration\"))[0].actor\n        let item = item_owner.items.getName(\"Lion's Roar - Inspiration\")\n        DAE.doEffects(item, true, [workflow.actor], {whisper: false})\n    }\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Item.JlCJinhycHTbmSmo"
+    },
+    "exportSource": {
+      "world": "ddf-friends-characters",
+      "system": "dnd5e",
+      "coreVersion": "9.249",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
