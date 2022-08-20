@@ -23,7 +23,35 @@ async function ShoveProne() {
     let defender = Array.from(game.user.targets)[0];
     ChatMessage.create({ 'content': `${shover.name} tries to shove ${defender.name} to the ground!` })
     let tactorRoll = await shover.actor.rollSkill("ath");
-    let skill = defender.actor.data.data.skills.ath.total < defender.actor.data.data.skills.acr.total ? "acr" : "ath";
+    
+    let skill = defender.actor.data.data.skills.ath.total > defender.actor.data.data.skills.acr.total ? "ath" : "acr";
+    if (Math.abs(defender.actor.data.data.skills.ath.total - defender.actor.data.data.skills.acr.total) <= 4) {
+
+        if (CheckForDisadvEffect(defender.actor, "acr")) {
+            skill = "ath";
+        }
+
+        if (CheckForDisadvEffect(defender.actor, "ath")) {
+            skill = "acr";
+        }
+
+        if (CheckForDisadvEffect(defender.actor, "acr") && CheckForDisadvEffect(defender.actor, "ath")) {
+            skill = defender.actor.data.data.skills.ath.total > defender.actor.data.data.skills.acr.total ? "ath" : "acr";
+        }
+
+        if (CheckForAdvEffect(defender.actor, "acr")) {
+            skill = "acr";
+        }
+
+        if (CheckForAdvEffect(defender.actor, "ath")) {
+            skill = "ath";
+        }
+
+        if (CheckForAdvEffect(defender.actor, "acr") && CheckForAdvEffect(defender.actor, "ath")) {
+            skill = defender.actor.data.data.skills.ath.total > defender.actor.data.data.skills.acr.total ? "ath" : "acr";
+        }
+    }    
+    
     let tokenRoll = await defender.actor.rollSkill(skill);
     //await wait(3000);
     if (tactorRoll.total >= tokenRoll.total) {
@@ -49,8 +77,6 @@ async function ShoveProne() {
     }
 }
 
-
-
 async function ShoveKnockback() {
     let pusher = canvas.tokens.get(args[0].tokenId);
     let target = Array.from(game.user.targets)[0];
@@ -65,4 +91,24 @@ async function ShoveKnockback() {
     }
     else ChatMessage.create({ 'content': `${pusher.name} is to weak, can't push ${target.name} back at all!` })
 
+}
+
+function CheckForDisadvEffect(actor, skillName) {
+    return CheckForEffect(actor, skillName, "disadvantage")
+}
+
+function CheckForAdvEffect(actor, skillName) {
+    return CheckForEffect(actor, skillName, "advantage")
+}
+
+function CheckForEffect(actor, skillName, condition) {
+    const check = (eff) => eff.data.changes.some((change) => change.key === `flags.midi-qol.${condition}.skill.${skillName}` && change.value === '1');
+
+    const result = actor.effects?.some(check)
+
+    if (result != null || result != undefined) {
+        return result;
+    } else {
+        return false;
+    }
 }
