@@ -1,0 +1,126 @@
+{
+  "name": "Shove",
+  "type": "feat",
+  "img": "https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/PoppyE.png",
+  "data": {
+    "description": {
+      "value": "",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "touch"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[preambleComplete]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Shove",
+          "type": "script",
+          "author": "4ft25hP617oXIBoS",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "//created by G.O.D.#0001\n//requires MidiQOL, Item Macro, Combat Utility Belt, Advanced Macro, DAE. Maybe more which I don't realise. \n//Thanks to Crymic, theripper93, tposney, thatlonelybugbear, Freeze, Flix, Zhell, and errational for thier help in the Foundry discord and their own discords. \n//Create action, 1 action, Target: 1 creature, Range: Touch, Action type: Utility, On Use Macro: ItemMacro.\n\n/* async function wait(ms) {\n    return new Promise(resolve => {\n        setTimeout(resolve, ms);\n    });\n} */\n\nnew Dialog({\n    title: \"Shove Action\",\n    content: \"Which Shove Action?\",\n    buttons: {\n        A: { label: \"Shove (Prone)\", callback: () => { return ShoveProne(); } },\n        B: { label: \"Shove (Knockback)\", callback: () => { return ShoveKnockback(); } },\n    }\n}).render(true);\n\nasync function ShoveProne() {\n    let shover = canvas.tokens.get(args[0].tokenId);\n    let defender = Array.from(game.user.targets)[0];\n    ChatMessage.create({ 'content': `${shover.name} tries to shove ${defender.name} to the ground!` })\n    let tactorRoll = await shover.actor.rollSkill(\"ath\");\n    let skill = defender.actor.data.data.skills.ath.total < defender.actor.data.data.skills.acr.total ? \"acr\" : \"ath\";\n    let tokenRoll = await defender.actor.rollSkill(skill);\n    //await wait(3000);\n    if (tactorRoll.total >= tokenRoll.total) {\n        const effectData = {\n            label: \"Prone\",\n            icon: \"modules/combat-utility-belt/icons/prone.svg\",\n            flags: { core: { statusId: \"combat-utility-belt.prone\" } },\n            changes: [\n                { key: \"data.attributes.movement.all\", mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: \"*0.5\" },\n                { key: \"flags.midi-qol.disadvantage.attack.all\", mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: \"1\" },\n                { key: \"flags.midi-qol.grants.advantage.attack.mwak\", mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: \"1\" },\n                { key: \"flags.midi-qol.grants.advantage.attack.msak\", mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: \"1\" },\n                { key: \"flags.midi-qol.grants.disadvantage.attack.rwak\", mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: \"1\" },\n                { key: \"flags.midi-qol.grants.disadvantage.attack.rsak\", mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: \"1\" },\n            ]\n        }\n\n        await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: defender.actor.uuid, effects: [effectData] });\n        ChatMessage.create({ 'content': `${shover.name} succeeds in pushing ${defender.name} prone!` })\n    }\n    else {\n        ChatMessage.create({ 'content': `${defender.name} resists the shove attempt from ${shover.name}` })\n    }\n}\n\n\n\nasync function ShoveKnockback() {\n    let pusher = canvas.tokens.get(args[0].tokenId);\n    let target = Array.from(game.user.targets)[0];\n    ChatMessage.create({ 'content': `${pusher.name} tries to shove ${target.name} back 5 feet!` })\n    let tactorRoll = await pusher.actor.rollSkill(\"ath\");\n    let skill = target.actor.data.data.skills.ath.total < target.actor.data.data.skills.acr.total ? \"acr\" : \"ath\";\n    let tokenRoll = await target.actor.rollSkill(skill);\n    //await wait(3000);\n    if (tactorRoll.total >= tokenRoll.total) {\n        await game.macros.getName(\"Knockback\").execute(args[0].tokenId, Array.from(game.user.targets)[0].id)\n        ChatMessage.create({ 'content': `${pusher.name} pushes ${target.name} back!` })\n    }\n    else ChatMessage.create({ 'content': `${pusher.name} is to weak, can't push ${target.name} back at all!` })\n\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Item.YFBpe88Dmc9kKqno"
+    },
+    "exportSource": {
+      "world": "ddf-friends-characters",
+      "system": "dnd5e",
+      "coreVersion": "9.249",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

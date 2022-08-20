@@ -1,0 +1,126 @@
+{
+  "name": "Escape Grapple",
+  "type": "feat",
+  "img": "https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/SettE.png",
+  "data": {
+    "description": {
+      "value": "",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "none",
+      "cost": null,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Escape Grapple",
+          "type": "script",
+          "author": "4ft25hP617oXIBoS",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "// Based on Shove Macro made by G.O.D.#0001\n// Create action, Activation Cost: None , Target: self, Action type: Utility, On Use Macro: ItemMacro.\n\nconst effect = actor.effects.filter(i => i.data.label === \"Grappled\")[0];\n\nif (effect == null || effect == undefined)\n{\n    ui.notifications.error(\"You must be grappled to use this feature.\");\n    return;\n}\n\nconst grapplerUuid = `Actor.${effect.data.origin.split(\".\")[1]}`;\nconst grappler = game.actors.filter(i => i.uuid === grapplerUuid)[0];\n\nnew Dialog({\n    title: \"Escape Grapple\",\n    content: \"Which Check to use to escape?\",\n    buttons: {\n      athletics: { label: \"Athletics\", callback: () => { \n        return DoCheck(\"ath\");\n    }},\n      acrobatics: { label: \"Acrobatics\", callback: () => { \n        return DoCheck(\"acr\");\n    }},\n      auto: { label: \"Auto\", callback: () => { \n        return DoCheck(\"auto\");\n    }},\n    }\n}).render(true);\n\nasync function DoCheck(input){\n    let roll;\n    \n    switch(input) {\n        case \"ath\":\n            roll = await actor.rollSkill(\"ath\");\n            break;\n        case \"acr\":\n            roll = await actor.rollSkill(\"acr\");\n            break;\n        case \"auto\":\n            const check = actor.data.data.skills.ath.total > actor.data.data.skills.acr.total ? \"ath\" : \"acr\";\n            roll = await actor.rollSkill(check);\n            break;\n    }\n\n    let actorCheck = roll.total;\n\n    let gc = await grappler.rollSkill(\"ath\");\n    let grapplerCheck = gc.total;\n    \n    let chatTemplate = \"\";\n\n    if( actorCheck > grapplerCheck) {\n        chatTemplate += `${actor.name} escaped being grappled by ${grappler.name}`;\n\n        actor.deleteEmbeddedDocuments(\"ActiveEffect\", [effect.id]);\n    }\n    else {\n        chatTemplate += `${actor.name} failed to escape being grappled by ${grappler.name}`;\n    }\n\n    ChatMessage.create({\n        speaker: {\n          alias: actor.name\n        },\n        content: chatTemplate\n    });\n\n    console.log(\"escape grapple successfully executed\");\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[preambleComplete]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "core": {
+      "sourceId": "Item.bZKdIxf2nIpzjpQZ"
+    },
+    "exportSource": {
+      "world": "ddf-friends-characters",
+      "system": "dnd5e",
+      "coreVersion": "9.249",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
