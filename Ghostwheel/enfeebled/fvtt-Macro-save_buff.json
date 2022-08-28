@@ -4,7 +4,7 @@
   "author": "4ft25hP617oXIBoS",
   "img": "icons/svg/dice-target.svg",
   "scope": "global",
-  "command": "targets = args[0].targets;\nitem = args[0].actor.items.getName(\"Save Buff\")\n\nawait DAE.doEffects(item, true, targets, {whisper: false});",
+  "command": "const targets = args[0].targets;\n\nconst effectData = {\n    label: \"Save Buff\",\n    icon: \"icons/svg/item-bag.svg\",\n    flags: {\n        core: { statusId: \" \" },\n        dae: { specialDuration: ['isSave'] }\n    },\n    changes: [\n        { key: \"flags.midi-qol.advantage.ability.save.all\", mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: \"1\" },\n    ]\n}\n\n\nfor (const target of targets) {\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: target.actor.uuid, effects: [effectData] });\n}",
   "flags": {
     "combat-utility-belt": {
       "macroTrigger": ""
