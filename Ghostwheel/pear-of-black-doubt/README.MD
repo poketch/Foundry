@@ -1,6 +1,12 @@
 
 # Description
 
+### Pearl of Black Doubt (Initiate)
+
+*Just as a pearl irritates an oyster's mouth, your enemy's failure compounds until you appear barely visible before their eyes.*
+
+If a creature misses you with an attack while in this stance, it makes all subsequent attacks against you with disadvantage until the end of the current turn.
+
 
 Created by Ghostwheel#0698
 
