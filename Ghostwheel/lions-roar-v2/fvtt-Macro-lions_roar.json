@@ -1,0 +1,19 @@
+{
+  "name": "lions_roar",
+  "type": "script",
+  "author": "4ft25hP617oXIBoS",
+  "img": "icons/svg/dice-target.svg",
+  "scope": "global",
+  "command": "// Controls\n\nconst insp_name = \"Lion's Roar - Inspiration\";\nconst insp_icon = \"icons/svg/item-bag.svg\";\nlet damage = \"1d6\";\n\n\n// Main Funciton\nconst mark_flag = \"gw.lions-roar.marked\";\nconst insp_flag = \"gw.lions-roar.inspiration\";\nconst workflow = args[0];\nconst targets = [...workflow.targets];\n\nfor (const target of targets) {\n\n    //if you missed, move on\n    if (!workflow.hitTargets.includes(target)) { continue; }\n\n    const tactor = target.actor;\n    const effects = Array.from(tactor.effects);\n\n    //if you hit, and the target has no qualifying effect, reapply effect.\n    if (effects.some(eff => eff.data.flags.core === null || eff.data.flags.core === undefined)) {\n        reapply(tactor);\n        continue;\n    }\n\n    if (effects.some((effect) => effect.data.flags.core.statusId == mark_flag)) {\n        if (workflow.isCritical === true) { damage = `${damage[0] * 2}d6`; };\n        damage_roll = await new Roll(damage).evaluate({ async: true });\n        new MidiQOL.DamageOnlyWorkflow(workflow.actor, workflow.token, damage_roll.total, workflow.damageDetail[0].type, target ? [target] : [], damage_roll, { flavor: \"Lion's Roar - Inspiration\", itemCardId: workflow.itemCardId });\n\n    } else {\n        reapply(tactor);\n    }\n}\n\nfunction reapply(tactor) {\n\n    if ([...game.actors].some(ac => FindEffect([...ac.effects]))) {\n\n        const insp = {\n            label: insp_name,\n            icon: insp_icon,\n            flags: {\n                core: { statusId: \"gw.lions-roar.inspiration\" },\n                dae: { specialDuration: ['turnStartSource', '1Hit:mwak', '1Hit:rwak', '1Hit:rsak', '1Hit:mwak'] }\n            },\n            changes: [\n                { key: \"flags.midi-qol.onUseMacroName\", mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: \"lions_roar, preActiveEffects\" }\n            ],\n        }\n\n        MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: workflow.actor.uuid, effects: [insp] });\n    }\n}\n\nfunction FindEffect(effects) {\n\n    for (const effect of effects) {\n        if (effect.data.flags.core === null || effect.data.flags.core === undefined) { continue; }\n\n        if (effect.data.flags.core.statusId == mark_flag) { return true; }\n    }\n    return false;\n}",
+  "flags": {
+    "combat-utility-belt": {
+      "macroTrigger": ""
+    },
+    "exportSource": {
+      "world": "ddf-friends-characters",
+      "system": "dnd5e",
+      "coreVersion": "9.249",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
