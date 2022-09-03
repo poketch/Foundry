@@ -1,4 +1,4 @@
-const parent_eff = "Stance - Pearl of Black Doubt";
+const parent_eff = "Pearl of Black Doubt";
 
 const child_eff = "Doubt";
 
@@ -10,7 +10,7 @@ async function main(args) {
     //if the workflow is a spell, return
     if (args.templateData != null || args.templateData != undefined) { return; }
 
-    const ttokens = [...args.targets]?.filter(token => [...token.actor.effects].some(ef => ef.data.label === parent_eff && ef.data.disabled === false));
+    const ttokens = [...args.targets]?.filter(token => [...token.actor.effects].some(ef => ef.data.label.includes(parent_eff) && ef.data.disabled === false));
 
     if (ttokens.length == 0 || ttokens == null || ttokens == undefined) { return; }
 
@@ -43,6 +43,7 @@ async function main(args) {
 
         //apply effect
         MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tactor.uuid, effects: [effectData] });
+        console.log("Pearl of Black Doubt Activated sucessfully");
 
 
 
