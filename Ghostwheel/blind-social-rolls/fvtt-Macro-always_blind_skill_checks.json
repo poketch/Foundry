@@ -1,0 +1,19 @@
+{
+  "name": "always_blind_skill_checks",
+  "type": "script",
+  "author": "4ft25hP617oXIBoS",
+  "img": "icons/svg/dice-target.svg",
+  "scope": "global",
+  "command": "Hooks.on(\"createChatMessage\", main);\n\n// Set to Perception, Insight, Investigation\nconst always_blind = [\"prc\", \"ins\", \"inv\"];\n\nfunction main(args) {\n\n    console.log(\"running macro\");\n    let data = args;\n\n    if (data.data.flags?.dnd5e?.roll?.type == null || data.data.flags?.dnd5e?.roll?.type == undefined) {\n        return;\n    }\n\n    if (data.data.flags?.dnd5e?.roll?.skillId == null || data.data.flags?.dnd5e?.roll?.skillId == undefined) {\n        return;\n    }\n\n    if (always_blind.includes(data.data.flags.dnd5e.roll.skillId)) {\n        data._roll.options.defaultRollMode = \"blindroll\"\n        data.data.blind = true;\n        data.data.whisper = game.users.filter(user => user.isGM).map(user => user.id);\n    }\n}",
+  "flags": {
+    "combat-utility-belt": {
+      "macroTrigger": ""
+    },
+    "exportSource": {
+      "world": "ddf-friends-characters",
+      "system": "dnd5e",
+      "coreVersion": "9.249",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
