@@ -9,7 +9,7 @@ Once added as an ItemMacro on the desired item:
 
  - Change the healing to the desired amount. Usable syntax is the same as the `/r` command [https://foundryvtt.com/article/dice/] 
 
- - Add `ItemMacro`` to `OnUseMacros` with the trigger `Before Active Effects`
+ - Add `ItemMacro` to `OnUseMacros` with the trigger `Before Active Effects`
 
  - ???
 
