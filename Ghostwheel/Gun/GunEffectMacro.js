@@ -1,0 +1,1 @@
+setProperty(this, 'advantage', true);
