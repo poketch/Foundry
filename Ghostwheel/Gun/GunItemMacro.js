@@ -4,7 +4,7 @@ let effect = actor.effects.filter(eff => eff.data.label === item.name)[0];
 if (args[0].macroPass === "preItemRoll") {
 
     item.data.flags.loaded ??= true
-    item.data.flags.properties ??= storeProperties(item.data.data.actionType, item.data.data.damage, item.data.data.range);
+    item.data.flags.properties ??= storeProperties(item.data.data.actionType, item.data.data.damage, item.data.data.range, item.data.data.consume);
 
     if (item.data.flags.misfired !== null || item.data.flags.misfired !== undefined) {
 
@@ -33,7 +33,7 @@ if (args[0].macroPass === "preItemRoll") {
 
     if (item.data.flags.loaded === false) {
 
-        item.data.flags.properties = storeProperties(item.data.data.actionType, item.data.data.damage, item.data.data.range);
+        item.data.flags.properties = storeProperties(item.data.data.actionType, item.data.data.damage, item.data.data.range, item.data.data.consume);
         unloadGun(item);
 
         ChatMessage.create({
@@ -107,12 +107,13 @@ if (args[0].macroPass === "postAttackRoll") {
     item.data.flags.loaded = false;
 }
 
-function storeProperties(actionType, damage, range) {
+function storeProperties(actionType, damage, range, ammunition) {
 
     itemProperties = {
         actionType: actionType,
         damage: damage,
         range: range,
+        ammunition: ammunition,
     };
 
     return itemProperties;
@@ -123,6 +124,7 @@ function unloadGun(item) {
     setProperty(item.data.data, "actionType", "other");
     setProperty(item.data.data, "damage", {});
     setProperty(item.data.data, "range", {});
+    setProperty(item.data.data, "consume", {});
 }
 
 function loadGun(item) {
@@ -130,4 +132,5 @@ function loadGun(item) {
     setProperty(item.data.data, "actionType", item.data.flags.properties.actionType);
     setProperty(item.data.data, "damage", item.data.flags.properties.damage);
     setProperty(item.data.data, "range", item.data.flags.properties.range);
+    setProperty(item.data.data, "consume", item.data.flags.properties.ammunition);
 }

@@ -32,9 +32,9 @@
       "type": "creature"
     },
     "range": {
-      "value": null,
+      "value": 120,
       "long": null,
-      "units": ""
+      "units": "ft"
     },
     "uses": {
       "value": null,
@@ -42,9 +42,9 @@
       "per": ""
     },
     "consume": {
-      "type": "",
-      "target": "",
-      "amount": null
+      "type": "ammo",
+      "target": "EZwC6gtTWlkd8E8J",
+      "amount": 1
     },
     "ability": "",
     "actionType": "rwak",
@@ -57,7 +57,7 @@
     "damage": {
       "parts": [
         [
-          "1d10 + @mod",
+          "2d8 + @mod",
           "piercing"
         ]
       ],
@@ -82,19 +82,19 @@
     "baseItem": "",
     "properties": {
       "ada": false,
-      "amm": false,
+      "amm": true,
       "fin": false,
-      "fir": false,
+      "fir": true,
       "foc": false,
       "hvy": false,
       "lgt": false,
-      "lod": false,
+      "lod": true,
       "mgc": false,
       "rch": false,
-      "rel": false,
+      "rel": true,
       "ret": false,
       "sil": false,
-      "spc": false,
+      "spc": true,
       "thr": false,
       "two": false,
       "ver": false
@@ -157,7 +157,7 @@
       "sorting": "l"
     },
     "midi-qol": {
-      "fumbleThreshold": 10,
+      "fumbleThreshold": 5,
       "effectActivation": false,
       "onUseMacroName": "[all]ItemMacro"
     },
@@ -181,7 +181,7 @@
           "author": "4ft25hP617oXIBoS",
           "img": "icons/svg/dice-target.svg",
           "scope": "global",
-          "command": "let workflow = MidiQOL.Workflow.getWorkflow(args[0].uuid);\nlet effect = actor.effects.filter(eff => eff.data.label === item.name)[0];\n\nif (args[0].macroPass === \"preItemRoll\") {\n\n    item.data.flags.loaded ??= true\n    item.data.flags.properties ??= storeProperties(item.data.data.actionType, item.data.data.damage, item.data.data.range);\n\n    if (item.data.flags.misfired !== null || item.data.flags.misfired !== undefined) {\n\n        if (item.data.flags.misfired === \"broken\" && effect.data.disabled === true) {\n\n            unloadGun(item);\n\n            ChatMessage.create({\n                speaker: {\n                    alias: actor.name\n                },\n                content: \n                `<p style=\"text-align:center;font-style:italic;font-size:16px\">\n                    ${actor.name}'s ${item.name} is completely destroyed and can't be fired again...\n                </p>`\n            });\n\n            return;\n        }\n\n    }\n\n    if (item.data.flags.loaded === true) {\n        loadGun(item);\n    }\n\n    if (item.data.flags.loaded === false) {\n\n        item.data.flags.properties = storeProperties(item.data.data.actionType, item.data.data.damage, item.data.data.range);\n        unloadGun(item);\n\n        ChatMessage.create({\n            speaker: {\n                alias: actor.name\n            },\n            content: \n            `<p style=\"text-align: center;font-style:italic;font-size: 16px\">\n                ${actor.name} reloaded their ${item.name}\n            </p>`\n        });\n\n        item.data.flags.loaded = true;\n        return;\n    }\n}\n\nif (args[0].macroPass === \"preambleComplete\") {\n\n    if (effect.data.disabled === false) {\n        // Make all attacks at advantage\n        effect.callMacro(\"never\", workflow);\n    }\n}\nif (args[0].macroPass === \"preCheckHits\") {\n\n    // check for misfires\n\n    const misfireThreshold = item.data.flags['midi-qol'].fumbleThreshold;\n    const misFires = workflow.attackRoll.dice[0].results.map(obj => obj.result <= misfireThreshold);\n\n    if (misFires.includes(true)) {\n        // make attack automiss\n        workflow.setAttackRoll(await new Roll('1').evaluate());\n\n\n        if (effect.data.disabled === false) {\n\n            // set flag to deactivate effect\n            item.data.flags.misfired = \"misfire\";\n        }\n\n        if (effect.data.disabled === true) {\n\n            // set flag to mark item as broken\n            item.data.flags.misfired = \"broken\";\n        }\n    }\n}\nif (args[0].macroPass === \"postAttackRoll\") {\n\n\n    if (item.data.flags.misfired === \"misfire\") {\n\n        // change message to reflect misfire, will only work if a misfire actually happened\n        let message = game.messages.filter(i => i.data.flags['midi-qol']?.workflowId === workflow.uuid).at(-1);\n        message.data.content = message.data.content.replace(\"badly misses\", \"misfired against\");\n\n        item.data.flags.misfired = \"okay\";\n\n        effectId = actor.effects.filter(eff => eff.data.label === item.name)[0].id;\n\n        await MidiQOL.socket().executeAsGM(\"updateEffects\", { actorUuid: actor.uuid, updates: [{ \"_id\": effectId, \"disabled\": true }] });\n\n    } else if (item.data.flags.misfired === \"broken\") {\n\n        let message = game.messages.filter(i => i.data.flags['midi-qol']?.workflowId === workflow.uuid).at(-1);\n        message.data.content = message.data.content.replace(\"badly misses\", `breaks ${item.name} misfiring against`);\n    }\n\n    item.data.flags.loaded = false;\n}\n\nfunction storeProperties(actionType, damage, range) {\n\n    itemProperties = {\n        actionType: actionType,\n        damage: damage,\n        range: range,\n    };\n\n    return itemProperties;\n}\n\nfunction unloadGun(item) {\n\n    setProperty(item.data.data, \"actionType\", \"other\");\n    setProperty(item.data.data, \"damage\", {});\n    setProperty(item.data.data, \"range\", {});\n}\n\nfunction loadGun(item) {\n\n    setProperty(item.data.data, \"actionType\", item.data.flags.properties.actionType);\n    setProperty(item.data.data, \"damage\", item.data.flags.properties.damage);\n    setProperty(item.data.data, \"range\", item.data.flags.properties.range);\n}",
+          "command": "let workflow = MidiQOL.Workflow.getWorkflow(args[0].uuid);\nlet effect = actor.effects.filter(eff => eff.data.label === item.name)[0];\n\nif (args[0].macroPass === \"preItemRoll\") {\n\n    item.data.flags.loaded ??= true\n    item.data.flags.properties ??= storeProperties(item.data.data.actionType, item.data.data.damage, item.data.data.range, item.data.data.consume);\n\n    if (item.data.flags.misfired !== null || item.data.flags.misfired !== undefined) {\n\n        if (item.data.flags.misfired === \"broken\" && effect.data.disabled === true) {\n\n            unloadGun(item);\n\n            ChatMessage.create({\n                speaker: {\n                    alias: actor.name\n                },\n                content: \n                `<p style=\"text-align:center;font-style:italic;font-size:16px\">\n                    ${actor.name}'s ${item.name} is completely destroyed and can't be fired again...\n                </p>`\n            });\n\n            return;\n        }\n\n    }\n\n    if (item.data.flags.loaded === true) {\n        loadGun(item);\n    }\n\n    if (item.data.flags.loaded === false) {\n\n        item.data.flags.properties = storeProperties(item.data.data.actionType, item.data.data.damage, item.data.data.range, item.data.data.consume);\n        unloadGun(item);\n\n        ChatMessage.create({\n            speaker: {\n                alias: actor.name\n            },\n            content: \n            `<p style=\"text-align: center;font-style:italic;font-size: 16px\">\n                ${actor.name} reloaded their ${item.name}\n            </p>`\n        });\n\n        item.data.flags.loaded = true;\n        return;\n    }\n}\n\nif (args[0].macroPass === \"preambleComplete\") {\n\n    if (effect.data.disabled === false) {\n        // Make all attacks at advantage\n        effect.callMacro(\"never\", workflow);\n    }\n}\nif (args[0].macroPass === \"preCheckHits\") {\n\n    // check for misfires\n\n    const misfireThreshold = item.data.flags['midi-qol'].fumbleThreshold;\n    const misFires = workflow.attackRoll.dice[0].results.map(obj => obj.result <= misfireThreshold);\n\n    if (misFires.includes(true)) {\n        // make attack automiss\n        workflow.setAttackRoll(await new Roll('1').evaluate());\n\n\n        if (effect.data.disabled === false) {\n\n            // set flag to deactivate effect\n            item.data.flags.misfired = \"misfire\";\n        }\n\n        if (effect.data.disabled === true) {\n\n            // set flag to mark item as broken\n            item.data.flags.misfired = \"broken\";\n        }\n    }\n}\nif (args[0].macroPass === \"postAttackRoll\") {\n\n\n    if (item.data.flags.misfired === \"misfire\") {\n\n        // change message to reflect misfire, will only work if a misfire actually happened\n        let message = game.messages.filter(i => i.data.flags['midi-qol']?.workflowId === workflow.uuid).at(-1);\n        message.data.content = message.data.content.replace(\"badly misses\", \"misfired against\");\n\n        item.data.flags.misfired = \"okay\";\n\n        effectId = actor.effects.filter(eff => eff.data.label === item.name)[0].id;\n\n        await MidiQOL.socket().executeAsGM(\"updateEffects\", { actorUuid: actor.uuid, updates: [{ \"_id\": effectId, \"disabled\": true }] });\n\n    } else if (item.data.flags.misfired === \"broken\") {\n\n        let message = game.messages.filter(i => i.data.flags['midi-qol']?.workflowId === workflow.uuid).at(-1);\n        message.data.content = message.data.content.replace(\"badly misses\", `breaks ${item.name} misfiring against`);\n    }\n\n    item.data.flags.loaded = false;\n}\n\nfunction storeProperties(actionType, damage, range, ammunition) {\n\n    itemProperties = {\n        actionType: actionType,\n        damage: damage,\n        range: range,\n        ammunition: ammunition,\n    };\n\n    return itemProperties;\n}\n\nfunction unloadGun(item) {\n\n    setProperty(item.data.data, \"actionType\", \"other\");\n    setProperty(item.data.data, \"damage\", {});\n    setProperty(item.data.data, \"range\", {});\n    setProperty(item.data.data, \"consume\", {});\n}\n\nfunction loadGun(item) {\n\n    setProperty(item.data.data, \"actionType\", item.data.flags.properties.actionType);\n    setProperty(item.data.data, \"damage\", item.data.flags.properties.damage);\n    setProperty(item.data.data, \"range\", item.data.flags.properties.range);\n    setProperty(item.data.data, \"consume\", item.data.flags.properties.ammunition);\n}",
           "folder": null,
           "sort": 0,
           "permission": {
@@ -195,7 +195,7 @@
       "resource-link": ""
     },
     "core": {
-      "sourceId": "Item.0JXetOicFAo6QDIt"
+      "sourceId": "Item.0t6Xr0ytLjQwrqP2"
     },
     "exportSource": {
       "world": "ddf-friends-characters",
