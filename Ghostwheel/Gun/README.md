@@ -22,7 +22,7 @@ Different firearms can easily be made by duplicating the item and changing **its
 From there the details (damage, crit threshold, etc, etc.) can be whatever you want. 
 In theory this will work for any item requiring an attack roll though Ranged Weapon Attack is the only one tested.
 
-To change the misfire range, set the `Fumble Threshold` property under the `Midi Qol Fields` in teh item details
+To change the misfire range, set the `Fumble Threshold` property under the `Midi Qol Fields` in the item details
 
 
 ##### To set up one from scratch:
