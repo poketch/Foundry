@@ -1,0 +1,33 @@
+{
+  "name": "pearl_of_black_doubt",
+  "type": "script",
+  "author": "4ft25hP617oXIBoS",
+  "img": "icons/svg/dice-target.svg",
+  "scope": "global",
+  "command": "const parent_eff = \"Pearl of Black Doubt\";\n\nconst child_eff = \"Doubt\";\n\nconst hook = Hooks.on(\"midi-qol.AttackRollComplete\", main);\n\nasync function main(args) {\n\n    //if the workflow is a spell, return\n    if (args.templateData !== null || args.templateData !== undefined) { return; }\n\n    const ttokens = [...args.targets]?.filter(token => [...token.actor.effects].some(ef => ef.label.includes(parent_eff) && ef.disabled === false));\n\n    if (ttokens.length === 0 || ttokens === null || ttokens === undefined) { return; }\n\n    for (const ttoken of ttokens) {\n\n        //if target was hit, do nothing\n        if ([...args.hitTargets].includes(ttoken)) { continue; }\n\n        const tactor = ttoken.actor;\n\n        if ([...tactor.effects].some(ef => ef.label === child_eff)) { continue; }\n\n        //define effect\n        const effectData = {\n            label: child_eff,\n            icon: \"modules/dfreds-convenient-effects/images/dodging.svg\",\n            duration: { startTime: 120, turns: 1 },\n            flags: {\n                core: { statusId: \" \" },\n            },\n            changes: [\n                {\n                    key: \"flags.midi-qol.grants.disadvantage.attack.all\",\n                    mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: \"1\"\n                },\n            ]\n        };\n\n        //apply effect\n        MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: tactor.uuid, effects: [effectData] });\n        console.log(\"Pearl of Black Doubt Activated sucessfully\");\n\n    }\n\n\n}",
+  "flags": {
+    "combat-utility-belt": {
+      "macroTrigger": ""
+    },
+    "advanced-macros": {
+      "runAsGM": true
+    },
+    "core": {
+      "sourceId": "Compendium.world.macros.qsuCMNZTyDRFb6QH"
+    },
+    "exportSource": {
+      "world": "ddf-friends-characters",
+      "system": "dnd5e",
+      "coreVersion": "10.288",
+      "systemVersion": "2.0.3"
+    }
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "2.0.3",
+    "coreVersion": "10.288",
+    "createdTime": 1666824670992,
+    "modifiedTime": 1666824671010,
+    "lastModifiedBy": "4ft25hP617oXIBoS"
+  }
+}
