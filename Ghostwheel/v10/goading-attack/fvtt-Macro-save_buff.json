@@ -1,0 +1,30 @@
+{
+  "name": "save_buff",
+  "type": "script",
+  "author": "4ft25hP617oXIBoS",
+  "img": "icons/svg/dice-target.svg",
+  "scope": "global",
+  "command": "const targets = actor[0].targets;\n\nconst effectData = {\n    label: \"Save Buff\",\n    icon: \"icons/svg/item-bag.svg\",\n    flags: {\n        core: { statusId: \" \" },\n        dae: { specialDuration: ['isSave'] }\n    },\n    changes: [\n        { key: \"flags.midi-qol.advantage.ability.save.all\", mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: \"1\" },\n    ]\n}\n\n\nfor (const target of targets) {\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: target.actor.uuid, effects: [effectData] });\n}",
+  "flags": {
+    "combat-utility-belt": {
+      "macroTrigger": ""
+    },
+    "advanced-macros": {
+      "runAsGM": false
+    },
+    "exportSource": {
+      "world": "ddf-friends-characters",
+      "system": "dnd5e",
+      "coreVersion": "10.288",
+      "systemVersion": "2.0.3"
+    }
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "2.0.3",
+    "coreVersion": "10.288",
+    "createdTime": null,
+    "modifiedTime": 1666816943477,
+    "lastModifiedBy": "4ft25hP617oXIBoS"
+  }
+}
