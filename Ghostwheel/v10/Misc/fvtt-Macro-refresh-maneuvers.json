@@ -4,7 +4,7 @@
   "author": "uIeWZlk10NwP3l74",
   "img": "systems/dnd5e/icons/skills/shadow_12.jpg",
   "scope": "global",
-  "command": "// Set the feature's \"Activation Condition\" as NFM, and set it to X/X charges.\nmain();\n\nasync function refresh(item) {\n    let tag = \"NFM\"; //non-flourish-manuever\n    if (item.system.activation) {\n        if (item.system.activation.condition === tag) {\n            await item.update({ \"system.uses.value\": item.system.uses.max });\n        }\n    }\n}\n\nasync function main() {\n    let actors = canvas.tokens.placeables.filter(t => Object.keys(t.actor.ownership).includes(game.userId)).map(t => t.actor);\n    \n    actors.forEach(act => act.items.forEach(refresh));\n}",
+  "command": "// Set the feature's \"Activation Condition\" as NFM, and set it to X/X charges.\nmain();\n\nasync function refresh(item) {\n    let tag = \"NFM\"; //non-flourish-manuever\n    if (item.system.activation) {\n        if (item.system.activation.condition === tag) {\n            await item.update({ \"system.uses.value\": item.system.uses.max });\n        }\n    }\n}\n\nasync function main() {\n    let actors = canvas.tokens.placeables.filter(t => t.actor.ownership[game.userId] === 3).map(t => t.actor)\n\n    actors.forEach(act => act.items.forEach(refresh));\n}",
   "flags": {
     "furnace": {
       "runAsGM": false
@@ -27,7 +27,7 @@
     "systemVersion": "2.0.3",
     "coreVersion": "10.288",
     "createdTime": null,
-    "modifiedTime": 1667054372514,
+    "modifiedTime": 1667055838237,
     "lastModifiedBy": "4ft25hP617oXIBoS"
   }
 }
