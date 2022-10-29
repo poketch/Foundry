@@ -1,0 +1,33 @@
+{
+  "name": "Refresh Maneuvers",
+  "type": "script",
+  "author": "uIeWZlk10NwP3l74",
+  "img": "systems/dnd5e/icons/skills/shadow_12.jpg",
+  "scope": "global",
+  "command": "// Set the feature's \"Activation Condition\" as NFM, and set it to X/X charges.\nmain();\n\nasync function refresh(item) {\n    let tag = \"NFM\"; //non-flourish-manuever\n    if (item.system.activation) {\n        if (item.system.activation.condition === tag) {\nconsole.log(item);\n            await item.update({ \"system.uses.value\": item.system.uses.max });\n        }\n    }\n}\n\nasync function main() {\n    let actor = canvas.tokens.controlled[0].actor;\n    console.log(\"executing\");\n    actor.items.forEach(refresh);\n}",
+  "flags": {
+    "furnace": {
+      "runAsGM": false
+    },
+    "core": {
+      "sourceId": "Macro.gGiyIE3QlhprXPjG"
+    },
+    "exportSource": {
+      "world": "ddf-friends-characters",
+      "system": "dnd5e",
+      "coreVersion": "10.288",
+      "systemVersion": "2.0.3"
+    },
+    "combat-utility-belt": {
+      "macroTrigger": ""
+    }
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "2.0.3",
+    "coreVersion": "10.288",
+    "createdTime": null,
+    "modifiedTime": 1667053122848,
+    "lastModifiedBy": "4ft25hP617oXIBoS"
+  }
+}
