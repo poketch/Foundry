@@ -4,7 +4,7 @@
   "author": "4ft25hP617oXIBoS",
   "img": "icons/svg/dice-target.svg",
   "scope": "global",
-  "command": "const targets = args[0].targets;\n\nlet workflow = MidiQOL.Workflow.getWorkflow(args[0].uuid);\n\nconst effects = workflow.actor.effects.filter(effect => effect.label.includes(\"Marked\"));\nconst markers = [];\n\nfor (const effect of effects) {\n\n    if (effect.flags?.isConvenient === true) {\n\n        const tokenId = effect.origin.split(\".\")[3];\n\n        markers.push(canvas.tokens.placeables.filter(tok => tok.id === tokenId).map(tok => tok.actor.id)[0]);\n    }\n    else {\n        markers.push(effect.origin.split(\".\")[1]);\n    }\n\n\n\n}\n\nconsole.log(markers);\n\nconst non_markers = targets.filter(target => !markers.includes(target.actor.id));\n\nlet marked = true;\nfor (var marker of markers) {\n    for (var target of targets) {\n        if (target.actor.id === marker) {\n            marked = false;\n            break;\n        }\n    }\n}\n\nif (marked) {\n    workflow.disadvantage = true;\n    if (workflow.templateData != null || workflow.templateData != undefined) {\n        await game.macros.getName(\"save_buff\").execute(...args);\n    }\n}\n\n\nconsole.log(\"Marked Executed Successfully\");",
+  "command": "const targets = args[0].targets;\n\nlet workflow = MidiQOL.Workflow.getWorkflow(args[0].uuid);\n\nconst effects = workflow.actor.effects.filter(effect => effect.label.includes(\"Marked\"));\nconst markers = [];\n\nfor (const effect of effects) {\n    \n    const origin = effect.origin.split(\".\");\n\n    if (origin[0] === \"Scene\") {\n\n        markers.push([\"tok\", origin[3]]);\n    }\n    else {\n\n        markers.push([\"act\", origin[1]]);\n    }\n\n\n}\n\nconst non_markers = targets.filter(target => !markers.includes(target.actor.id));\n\nlet marked = true;\nfor (var marker of markers) {\n    for (var target of targets) {\n\n        if (marker[0] === \"act\" && target.actor.id === marker[1]) {\n                marked = false;\n                break;            \n        }\n        if (marker[0] === \"tok\" && target.id === marker[1]) {\n                marked = false;\n                break;            \n        }\n    }\n}\n\nif (marked) {\n    setProperty(workflow, \"disadvantage\", true);\n    if (workflow.templateData != null || workflow.templateData != undefined) {\n        await game.macros.getName(\"save_buff\").execute(...args);\n    }\n}\n\n\nconsole.log(\"Marked Executed Successfully\");",
   "flags": {
     "combat-utility-belt": {
       "macroTrigger": ""
@@ -24,7 +24,7 @@
     "systemVersion": "2.0.3",
     "coreVersion": "10.288",
     "createdTime": null,
-    "modifiedTime": 1667335834531,
+    "modifiedTime": 1667338003346,
     "lastModifiedBy": "4ft25hP617oXIBoS"
   }
 }
