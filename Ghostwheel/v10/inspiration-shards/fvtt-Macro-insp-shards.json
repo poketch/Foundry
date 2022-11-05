@@ -1,0 +1,27 @@
+{
+  "name": "insp-shards",
+  "type": "script",
+  "author": "4ft25hP617oXIBoS",
+  "img": "icons/svg/dice-target.svg",
+  "scope": "global",
+  "command": "const feat_name = \"Inspiration Shards\";\n\n\nHooks.on(\"createChatMessage\", main);\n\nfunction main(args) {\n\n    if (game.combat != null) { return; }\n\n    let data = args;\n\n    if (data.flags?.dnd5e?.roll?.type == null || data.flags?.dnd5e?.roll?.type == undefined) { return; }\n\n    if (data.flags?.dnd5e?.roll?.skillId == null || data.flags?.dnd5e?.roll?.skillId == undefined) { return; }\n\n    \n    new Dialog({\n        title: \"Inspiration\",\n        content: \"Looks like you made a skill check ;) \\n . What was the outcome?\",\n        buttons: {\n            SUCCESS: { label: \"Success\", callback: () => { return Success(data); } },\n            FAILURE: { label: \"Failure\", callback: () => { return; } },\n        }\n    }).render(true);\n\n}\n\nasync function Success(data) {\n\n    const actor = await fromUuid(`Actor.${data.speaker.actor}`);\n    let item = actor.items.filter(it => it.name === feat_name)[0];\n\n    const uses = item.system.uses.value;\n\n    if (uses === (item.system.uses.max - 1)) {\n        \n        await  MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: actor.uuid, effects: [[...item.effects][0]] });\n        \n        \n        await item.update({\"system.uses.value\": 0});\n        return;\n    }\n\n    await item.update({\"system.uses.value\": uses+1});\n    return;\n}",
+  "flags": {
+    "combat-utility-belt": {
+      "macroTrigger": ""
+    },
+    "exportSource": {
+      "world": "ddf-friends-characters",
+      "system": "dnd5e",
+      "coreVersion": "10.288",
+      "systemVersion": "2.0.3"
+    }
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "2.0.3",
+    "coreVersion": "10.288",
+    "createdTime": 1667580290658,
+    "modifiedTime": 1667639784234,
+    "lastModifiedBy": "4ft25hP617oXIBoS"
+  }
+}
