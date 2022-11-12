@@ -1,25 +1,16 @@
-Hooks.on("createChatMessage", main);
+Hooks.on("dnd5e.rollSkill", main);
 
 // Set to Perception, Insight, Investigation
 const always_blind = ["prc", "ins", "inv"];
 
-function main(args) {
+function main(...args) {
 
-    console.log("running blind rolls macro");
-    let data = args;
+    if (!always_blind.includes(args[2])) { return; }
 
-    if (data.flags?.dnd5e?.roll?.type == null || data.flags?.dnd5e?.roll?.type == undefined) {
-        return;
-    }
+    let roll = args[1];
 
-    if (data.flags?.dnd5e?.roll?.skillId == null || data.flags?.dnd5e?.roll?.skillId == undefined) {
-        return;
-    }
-
-    if (always_blind.includes(data.flags.dnd5e.roll.skillId)) {
-        
-        setProperty(data.rolls[0].options, "defaultRollMode", "blindroll");
-        setProperty(data, "blind", true);
-        setProperty(data, "whisper", game.users.filter(user => user.isGM).map(user => user.id));
-    }
+    roll.options.defaultRollMode = "blindroll"
+    roll.options.rollMode = "blindroll"
+    roll.blind = true;
+    roll.whisper = game.users.filter(user => user.isGM).map(user => user.id);
 }

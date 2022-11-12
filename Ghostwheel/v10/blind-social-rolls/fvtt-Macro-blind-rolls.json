@@ -1,16 +1,13 @@
 {
-  "name": "blind rolls",
+  "name": "always_blind_skill_checks",
   "type": "script",
   "author": "4ft25hP617oXIBoS",
   "img": "icons/svg/dice-target.svg",
   "scope": "global",
-  "command": "Hooks.on(\"createChatMessage\", main);\n\n// Set to Perception, Insight, Investigation\nconst always_blind = [\"prc\", \"ins\", \"inv\"];\n\nfunction main(args) {\n\n    console.log(\"running blind rolls macro\");\n    let data = args;\n\n    if (data.flags?.dnd5e?.roll?.type == null || data.flags?.dnd5e?.roll?.type == undefined) {\n        return;\n    }\n\n    if (data.flags?.dnd5e?.roll?.skillId == null || data.flags?.dnd5e?.roll?.skillId == undefined) {\n        return;\n    }\n\n    if (always_blind.includes(data.flags.dnd5e.roll.skillId)) {\n        \n        setProperty(data.rolls[0].options, \"defaultRollMode\", \"blindroll\");\n        setProperty(data, \"blind\", true);\n        setProperty(data, \"whisper\", game.users.filter(user => user.isGM).map(user => user.id));\n    }\n}",
+  "command": "Hooks.on(\"dnd5e.rollSkill\", main);\n\n// Set to Perception, Insight, Investigation\nconst always_blind = [\"prc\", \"ins\", \"inv\"];\n\nfunction main(...args) {\n\n    if (!always_blind.includes(args[2])) { return; }\n\n    let roll = args[1];\n\n    roll.options.defaultRollMode = \"blindroll\"\n    roll.options.rollMode = \"blindroll\"\n    roll.blind = true;\n    roll.whisper = game.users.filter(user => user.isGM).map(user => user.id);\n}",
   "flags": {
     "combat-utility-belt": {
       "macroTrigger": ""
-    },
-    "core": {
-      "sourceId": "Compendium.world.macros.81ErlQ2OZGQtOCV6"
     },
     "exportSource": {
       "world": "ddf-friends-characters",
@@ -23,8 +20,8 @@
     "systemId": "dnd5e",
     "systemVersion": "2.0.3",
     "coreVersion": "10.288",
-    "createdTime": 1666815284447,
-    "modifiedTime": 1666815308637,
+    "createdTime": null,
+    "modifiedTime": 1668265416235,
     "lastModifiedBy": "4ft25hP617oXIBoS"
   }
 }
