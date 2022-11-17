@@ -1,0 +1,193 @@
+{
+  "name": "Dragon's Breath",
+  "type": "spell",
+  "system": {
+    "description": {
+      "value": "<div class=\"rd__b  rd__b--3\"><p>You touch one willing creature and imbue it with the power to spew magical energy from its mouth, provided it has one. Choose acid, cold, fire, lightning, or poison. Until the spell ends, the creature can use an action to exhale energy of the chosen type in a 15-foot cone. Each creature in that area must make a Dexterity saving throw, taking [[/r 3d6]] damage of the chosen type on a failed save, or half as much damage on a successful one.</p><div class=\"rd__spc-inline-post\"></div></div><div class=\"rd__b  rd__b--3\"><div class=\"rd__b  rd__b--3\"><span class=\"rd__h rd__h--3\" data-title-index=\"1\"> <span class=\"entry-title-inner\">At Higher Levels.</span></span> <p>When you cast this spell using a spell slot of 3rd level or higher, the damage increases by [[/r 1d6]] for each slot level above 2nd.</p><div class=\"rd__spc-inline-post\"></div></div><div class=\"rd__spc-inline-post\"></div></div>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "XGE",
+    "activation": {
+      "type": "bonus",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "minute"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "touch",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "touch"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": "",
+      "recovery": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": null,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 2,
+    "school": "trs",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "a hot pepper",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": "1d6"
+    }
+  },
+  "img": "icons/creatures/abilities/dragon-fire-breath-orange.webp",
+  "flags": {
+    "plutonium": {
+      "page": "spells.html",
+      "source": "XGE",
+      "hash": "dragon's%20breath_xge",
+      "propDroppable": "spell"
+    },
+    "itemacro": {
+      "macro": {
+        "name": "Dragon's Breath",
+        "type": "script",
+        "scope": "global",
+        "command": "/** \n * Dragon's Breath (DnD5e Spell)\n * Author: honeybadger#2614\n * License: MIT (c) 2022\n * Source: https://ko-fi.com/Post/Badger-Scripts-Dragons-Breath-spell-M4M3GED2E\n * Prerequisites: Foundry v10+, Warp Gate, Item Macro (as written)\n * Setup: \n *   Add this macro to your \"Dragon's Breath\" spell via ItemMacro.\n *   Alternatively, define `item` via your preferred method, which\n *     which be of type `Item5e`\n *   CAUTION: If using midi, REMOVE the `rollItem` helper and\n *     replace with midi arguments.\n *   Execution of this macro requires an owner of the target\n *     token to be currently active.\n * \n * Usage: \n *   Execute macro using preferred method, ensuring\n *     that the first two lines (spellLevel and actorDc) are\n *     correctly populated using your roller of choice (core and\n *     MRE supported, as written). \n *   Target a token and select the desired element type.\n *   A new at-will spell will be added to the target via Warp \n *     Gate's Mutation system.\n *   To remove this temporary item, call `warpgate.revert` on the\n *     mutated target, or click the \"Revert\" button at the top of\n *     its Actor sheet.\n */\n\nif (args[0] === \"off\") {\n\n    const lastArg = args[args.length - 1];\n    const tok = await fromUuid(lastArg.tokenUuid);\n\n    warpgate.revert(tok, 'Dragon\\'s Breath Ability');\n    return;\n}\n\nconst spellLevel = args[0].spellLevel;\nconst actorDc = args[0].actor.system.attributes.spelldc;\n\nconst buttonData = [\n    {\n        label: '🫧 Acid',\n        value: 'acid',\n    }, {\n        label: '❄️ Cold',\n        value: 'cold'\n    }, {\n        label: '🔥 Fire',\n        value: 'fire'\n    }, {\n        label: '⚡ Lightning',\n        value: 'lightning'\n    }, {\n        label: '☠️ Poison',\n        value: 'poison'\n    }\n];\n\nconst element = await warpgate.buttonDialog({ buttons: buttonData, title: 'Target recipient and select element:' }, 'column')\n\nif (!element) return;\n\nconst target = game.user.targets.first();\n\nif (!target) {\n    ui.notifications.warn('Please target one token to receive the ability.')\n}\n\nconst abilityData = {\n    \"name\": \"Breath Weapon\",\n    \"type\": \"spell\",\n    \"img\": \"icons/creatures/abilities/dragon-fire-breath-orange.webp\",\n    \"system\": {\n        \"activation\": {\n            \"type\": \"action\",\n            \"cost\": 1\n        },\n        \"duration\": {\n            \"units\": \"inst\"\n        },\n        \"target\": {\n            \"value\": 15,\n            \"units\": \"ft\",\n            \"type\": \"cone\"\n        },\n        \"range\": {\n            \"units\": \"self\"\n        },\n        \"ability\": \"\",\n        \"actionType\": \"save\",\n        \"damage\": {\n            \"parts\": [\n                [\n                    \"(@item.level + 1)d6\",\n                    element\n                ]\n            ]\n        },\n        \"save\": {\n            \"ability\": \"dex\",\n            \"dc\": actorDc,\n            \"scaling\": \"flat\"\n        },\n        \"level\": spellLevel,\n        \"school\": \"trs\",\n        \"preparation\": {\n            \"mode\": \"atwill\"\n        },\n    },\n}\n\n\nconst updates = {\n    embedded: {\n        Item: {\n            [abilityData.name]: abilityData\n        }\n    }\n}\n\nawait warpgate.mutate(target.document, updates, {}, { name: 'Dragon\\'s Breath Ability', description: `Providing an at-will spell, ${abilityData.name}, at level ${spellLevel} using ${element} damage` });",
+        "author": "4ft25hP617oXIBoS",
+        "_id": null,
+        "img": "icons/svg/dice-target.svg",
+        "folder": null,
+        "sort": 0,
+        "ownership": {
+          "default": 0
+        },
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[preambleComplete]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false
+    },
+    "core": {
+      "sourceId": "Actor.xk4FgV1Ja3N3zGqI.Item.zOdbIvLEoVsz3adS"
+    },
+    "exportSource": {
+      "world": "ddf-friends-characters",
+      "system": "dnd5e",
+      "coreVersion": "10.288",
+      "systemVersion": "2.0.3"
+    }
+  },
+  "effects": [
+    {
+      "label": "Dragon's Breath",
+      "icon": "icons/creatures/abilities/dragon-fire-breath-orange.webp",
+      "origin": "Actor.xk4FgV1Ja3N3zGqI.Item.zOdbIvLEoVsz3adS",
+      "duration": {
+        "seconds": 60,
+        "startTime": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "uVu7FVLNl5HS6ygc",
+      "changes": [
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "1",
+          "priority": 20
+        }
+      ],
+      "tint": null,
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "core": {
+          "statusId": ""
+        }
+      }
+    }
+  ],
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "2.0.3",
+    "coreVersion": "10.288",
+    "createdTime": 1668635869805,
+    "modifiedTime": 1668698064684,
+    "lastModifiedBy": "4ft25hP617oXIBoS"
+  }
+}
