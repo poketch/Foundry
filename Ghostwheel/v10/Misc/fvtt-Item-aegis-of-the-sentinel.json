@@ -1,0 +1,192 @@
+{
+  "name": "Aegis of the Sentinel",
+  "type": "feat",
+  "system": {
+    "description": {
+      "value": "",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": "",
+      "recovery": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "img": "icons/svg/item-bag.svg",
+  "effects": [
+    {
+      "label": "Aegis of the Sentinel",
+      "icon": "icons/svg/item-bag.svg",
+      "origin": "Actor.jKxy2fe8hRKCWL4J.Item.RJZmdSpd8wegFimt",
+      "duration": {
+        "rounds": 100000,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "vsnS8qXKX4xvV4O2",
+      "changes": [
+        {
+          "key": "flags.dae.onUpdateSource",
+          "mode": 0,
+          "value": "Aegis, ItemMacro, system.attributes.hp.value",
+          "priority": 20
+        }
+      ],
+      "tint": null,
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "selfTarget": false,
+          "selfTargetAlways": true,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "core": {
+          "statusId": ""
+        }
+      }
+    },
+    {
+      "label": "Aegis of the Sentinel - Protected",
+      "icon": "icons/svg/item-bag.svg",
+      "origin": "Actor.jKxy2fe8hRKCWL4J.Item.RJZmdSpd8wegFimt",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": 1,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "emzpXUBEN7rP1Q59",
+      "changes": [
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "",
+          "priority": 20
+        }
+      ],
+      "tint": null,
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "core": {
+          "statusId": "",
+          "sourceId": "Actor.jKxy2fe8hRKCWL4J.Item.RJZmdSpd8wegFimt.ActiveEffect.emzpXUBEN7rP1Q59"
+        }
+      }
+    }
+  ],
+  "flags": {
+    "itemacro": {
+      "macro": {
+        "name": "Aegis of the Sentinel",
+        "type": "script",
+        "scope": "global",
+        "command": "if (args[0] === \"on\") { return; }\n\nif (args[0] === \"off\") {\n\n    await actor.update({ \"system.attributes.hp.temp\": actor.system.attributes.hp.temp + actor.classes.crusader.system.levels });\n    return;\n}\n\n// skip if character's turn\n\nif (game.combat?.combatant?.name === actor.name) {\n    return;\n}\n\nconst effect = [...item.effects][1];\nsetProperty(effect, \"disabled\", false);\nconsole.log(effect);\nawait MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: actor.uuid, effects: [effect] });",
+        "author": "4ft25hP617oXIBoS",
+        "_id": null,
+        "img": "icons/svg/dice-target.svg",
+        "folder": null,
+        "sort": 0,
+        "ownership": {
+          "default": 0
+        },
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Actor.jKxy2fe8hRKCWL4J.Item.RJZmdSpd8wegFimt"
+    },
+    "exportSource": {
+      "world": "ddf-friends-characters",
+      "system": "dnd5e",
+      "coreVersion": "10.288",
+      "systemVersion": "2.0.3"
+    }
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "2.0.3",
+    "coreVersion": "10.288",
+    "createdTime": 1668780077690,
+    "modifiedTime": 1668784423107,
+    "lastModifiedBy": "4ft25hP617oXIBoS"
+  }
+}

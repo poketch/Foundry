@@ -27,3 +27,13 @@ Damage taken from the Steely Resolve pool does not provoke a Constitution saving
 
 ### Usage 
 Add the Feature to sheet and roll the item. It will apply two effects, one of them (usually the second) does nothing and can be deleted. Seems like this has to be a temporary effect.
+
+# Aegis of the Sentinel
+
+### Description 
+Starting at 3rd level, you learn to defend yourself against the attacks of multiple creatures and still stand tall. At the end of any turn on which you have taken damage from an enemy, you gain an aegis on yourself which lasts until the start of your next turn. The aegis has a number of hit points equal to your crusader level, and whenever you take damage you may have the ward take damage instead. If the damage reduces the aegis to 0 hit points, you take any remaining damage and the aegis disappears.
+
+You do not gain the aegis if you already have a previous aegis affecting you.
+
+### Usage 
+Add the Feature to sheet and roll the item. It will apply two effects, one of them (usually the second) does nothing and can be deleted. Seems like this has to be a temporary effect. The item will also quickly add and remove the second item which will give you some temp hp so you need to reset that as well.
