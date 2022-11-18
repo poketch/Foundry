@@ -151,7 +151,7 @@
         "name": "Aegis of the Sentinel",
         "type": "script",
         "scope": "global",
-        "command": "if (args[0] === \"on\") { return; }\n\nif (args[0] === \"off\") {\n\n    await actor.update({ \"system.attributes.hp.temp\": actor.system.attributes.hp.temp + actor.classes.crusader.system.levels });\n    return;\n}\n\n// skip if character's turn\n\nif (game.combat?.combatant?.name === actor.name) {\n    return;\n}\n\nconst effect = [...item.effects][1];\nsetProperty(effect, \"disabled\", false);\nconsole.log(effect);\nawait MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: actor.uuid, effects: [effect] });",
+        "command": "if (args[0] === \"on\") { return; }\n\nif (args[0] === \"off\") {\n\n    await actor.update({ \"system.attributes.hp.temp\": actor.system.attributes.hp.temp + actor.classes.crusader.system.levels });\n    return;\n}\n\n// skip if character's turn\n\nif (game.combat === null) { return; }\n\nif (game.combat?.combatant?.name === actor.name) { return; }\n\nconst effect = [...item.effects][1];\nsetProperty(effect, \"disabled\", false);\nconsole.log(effect);\nawait MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: actor.uuid, effects: [effect] });",
         "author": "4ft25hP617oXIBoS",
         "_id": null,
         "img": "icons/svg/dice-target.svg",
@@ -186,7 +186,7 @@
     "systemVersion": "2.0.3",
     "coreVersion": "10.288",
     "createdTime": 1668780077690,
-    "modifiedTime": 1668784423107,
+    "modifiedTime": 1668795179884,
     "lastModifiedBy": "4ft25hP617oXIBoS"
   }
 }
