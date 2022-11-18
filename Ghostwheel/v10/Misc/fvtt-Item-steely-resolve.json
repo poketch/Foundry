@@ -1,0 +1,201 @@
+{
+  "name": "Steely Resolve",
+  "type": "feat",
+  "img": "icons/svg/item-bag.svg",
+  "effects": [
+    {
+      "_id": "fm3c2zrl0t7z5ng4",
+      "changes": [
+        {
+          "key": "flags.dae.onUpdateSource",
+          "mode": 0,
+          "value": "Steely Resolve, ItemMacro, system.attributes.hp.value",
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "rounds": 100000,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "icon": "icons/svg/item-bag.svg",
+      "label": "Steely Resolve",
+      "origin": "Actor.xk4FgV1Ja3N3zGqI.Item.ApgOJlNLcpgcBtkl",
+      "transfer": false,
+      "flags": {
+        "core": {
+          "statusId": ""
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "specialDuration": [],
+          "transfer": false,
+          "selfTarget": false,
+          "macroRepeat": "none",
+          "selfTargetAlways": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Short Rest"
+        }
+      },
+      "tint": "#5cffb0"
+    }
+  ],
+  "flags": {
+    "magicitems": {
+      "enabled": true,
+      "equipped": true,
+      "attuned": true,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l",
+      "spells": {
+        "0": {
+          "id": "95K2aUhAGV9qXjnf",
+          "name": "Bane",
+          "pack": "dnd5e.spells",
+          "img": "systems/dnd5e/icons/spells/rip-magenta-2.jpg",
+          "baseLevel": "1",
+          "level": "1",
+          "consumption": "1",
+          "upcast": "1",
+          "upcastCost": "1",
+          "flatDc": true,
+          "dc": "13 + @pb"
+        }
+      }
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "fumbleThreshold": null
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false
+    },
+    "itemacro": {
+      "macro": {
+        "name": "Test",
+        "type": "script",
+        "scope": "global",
+        "command": "let updates = args[1].updates;\n\nconst actor = args[1].sourceActor;\nconst damage = args[1].options.dhp * -1;\nconst resource = actor.system.resources.primary;\n\nif (damage < (resource.max - resource.value)) {\n\nactor.update({\"system.resources.primary.value\": resource.value + damage})\n\nsetProperty(updates, \"system.attributes.hp.value\", updates.system.attributes.hp.value + damage);\n\n\n} else {\n\nconst diff = damage - (resource.max - resource.value);\n\nactor.update({\"system.resources.primary.value\": resource.max})\n\nsetProperty(updates, \"system.attributes.hp.value\", updates.system.attributes.hp.value + damage - diff);\n\n}",
+        "author": "4ft25hP617oXIBoS",
+        "_id": null,
+        "img": "icons/svg/dice-target.svg",
+        "folder": null,
+        "sort": 0,
+        "ownership": {
+          "default": 0
+        },
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Actor.xk4FgV1Ja3N3zGqI.Item.ApgOJlNLcpgcBtkl"
+    },
+    "exportSource": {
+      "world": "ddf-friends-characters",
+      "system": "dnd5e",
+      "coreVersion": "10.288",
+      "systemVersion": "2.0.3"
+    }
+  },
+  "system": {
+    "description": {
+      "value": "",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "round"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "self"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": "",
+      "recovery": ""
+    },
+    "consume": {
+      "type": "attribute",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "flat"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "2.0.3",
+    "coreVersion": "10.288",
+    "createdTime": 1668775152304,
+    "modifiedTime": 1668778165423,
+    "lastModifiedBy": "4ft25hP617oXIBoS"
+  }
+}
