@@ -23,13 +23,13 @@
         "startRound": null,
         "startTurn": null
       },
-      "icon": "icons/svg/item-bag.svg",
+      "icon": null,
       "label": "Steely Resolve",
       "origin": "Actor.xk4FgV1Ja3N3zGqI.Item.ApgOJlNLcpgcBtkl",
       "transfer": false,
       "flags": {
         "core": {
-          "statusId": ""
+          "statusId": "None"
         },
         "dae": {
           "stackable": "none",
@@ -95,10 +95,10 @@
     },
     "itemacro": {
       "macro": {
-        "name": "Test",
+        "name": "Steely Resolve",
         "type": "script",
         "scope": "global",
-        "command": "let updates = args[1].updates;\n\nconst actor = args[1].sourceActor;\nconst damage = args[1].options.dhp * -1;\nconst resource = actor.system.resources.primary;\n\nif (damage < (resource.max - resource.value)) {\n\nactor.update({\"system.resources.primary.value\": resource.value + damage})\n\nsetProperty(updates, \"system.attributes.hp.value\", updates.system.attributes.hp.value + damage);\n\n\n} else {\n\nconst diff = damage - (resource.max - resource.value);\n\nactor.update({\"system.resources.primary.value\": resource.max})\n\nsetProperty(updates, \"system.attributes.hp.value\", updates.system.attributes.hp.value + damage - diff);\n\n}",
+        "command": "if (game.combat === null) {return;}\n\n\nlet updates = args[1].updates;\n\nconst actor = args[1].sourceActor;\nconst damage = args[1].options.dhp * -1;\nconst resource = actor.system.resources.primary;\n\nif (damage < (resource.max - resource.value)) {\n\nactor.update({\"system.resources.primary.value\": resource.value + damage})\n\nsetProperty(updates, \"system.attributes.hp.value\", updates.system.attributes.hp.value + damage);\n\n\n} else {\n\nconst diff = damage - (resource.max - resource.value);\n\nactor.update({\"system.resources.primary.value\": resource.max})\n\nsetProperty(updates, \"system.attributes.hp.value\", updates.system.attributes.hp.value + damage - diff);\n\n}",
         "author": "4ft25hP617oXIBoS",
         "_id": null,
         "img": "icons/svg/dice-target.svg",
@@ -195,7 +195,7 @@
     "systemVersion": "2.0.3",
     "coreVersion": "10.288",
     "createdTime": 1668775152304,
-    "modifiedTime": 1668778165423,
+    "modifiedTime": 1668794588328,
     "lastModifiedBy": "4ft25hP617oXIBoS"
   }
 }
