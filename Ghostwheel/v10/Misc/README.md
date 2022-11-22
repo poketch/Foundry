@@ -36,4 +36,5 @@ Starting at 3rd level, you learn to defend yourself against the attacks of multi
 You do not gain the aegis if you already have a previous aegis affecting you.
 
 ### Usage 
-Add the Feature to sheet and roll the item. It will apply two effects, one of them (usually the second) does nothing and can be deleted. Seems like this has to be a temporary effect. The item will also quickly add and remove the second item which will give you some temp hp so you need to reset that as well.
+Requires: [Effect Macro](https://foundryvtt.com/packages/effectmacro)
+Add the Feature to sheet and roll the item. It will apply two effects, one of them (usually the second) does nothing and can be deleted.

@@ -101,46 +101,14 @@
         },
         "core": {
           "statusId": ""
-        }
-      }
-    },
-    {
-      "label": "Aegis of the Sentinel - Protected",
-      "icon": "icons/svg/item-bag.svg",
-      "origin": "Actor.jKxy2fe8hRKCWL4J.Item.RJZmdSpd8wegFimt",
-      "duration": {
-        "rounds": null,
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "turns": 1,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": false,
-      "_id": "emzpXUBEN7rP1Q59",
-      "changes": [
-        {
-          "key": "macro.itemMacro",
-          "mode": 0,
-          "value": "",
-          "priority": 20
-        }
-      ],
-      "tint": null,
-      "transfer": false,
-      "flags": {
-        "dae": {
-          "selfTarget": false,
-          "selfTargetAlways": false,
-          "stackable": "none",
-          "durationExpression": "",
-          "macroRepeat": "none",
-          "specialDuration": []
         },
-        "core": {
-          "statusId": "",
-          "sourceId": "Actor.jKxy2fe8hRKCWL4J.Item.RJZmdSpd8wegFimt.ActiveEffect.emzpXUBEN7rP1Q59"
+        "effectmacro": {
+          "onTurnStart": {
+            "script": "actor.unsetFlag(\"world\", \"gw.applyAegis\");\n\nactor.update({ \"system.attributes.hp.temp\": \n\n Math.max(0, actor.system.attributes.hp.temp - actor.classes.crusader.system.levels)\n\n});"
+          },
+          "onEachTurn": {
+            "script": "console.log(\"on each turn\");\n\nif (game.combat?.combatant?.name === actor.name) { \n    actor.unsetFlag(\"world\", \"gw.applyAegis\");\n    return; \n}\n\n\nif (actor?.flags?.world?.gw?.applyAegis) {\n\n    actor.update({\"system.attributes.hp.temp\": actor.system.attributes.hp.temp + actor.classes.crusader.system.levels});\n\nactor.unsetFlag(\"world\", \"gw.applyAegis\");\n\n\n}"
+          }
         }
       }
     }
@@ -151,7 +119,7 @@
         "name": "Aegis of the Sentinel",
         "type": "script",
         "scope": "global",
-        "command": "if (args[0] === \"on\") { return; }\n\nif (args[0] === \"off\") {\n\n    await actor.update({ \"system.attributes.hp.temp\": actor.system.attributes.hp.temp + actor.classes.crusader.system.levels });\n    return;\n}\n\n// skip if character's turn\n\nif (game.combat === null) { return; }\n\nif (game.combat?.combatant?.name === actor.name) { return; }\n\nconst effect = [...item.effects][1];\nsetProperty(effect, \"disabled\", false);\nconsole.log(effect);\nawait MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: actor.uuid, effects: [effect] });",
+        "command": "// skip if character's turn\nif (game.combat === null) { return; }\n\nif (game.combat?.combatant?.name === actor.name) { return; }\n\nconst updates = args[1];\n\nif (updates.options?.dhp < 0) {\nactor.setFlag(\"world\", \"gw.applyAegis\", true);\n}",
         "author": "4ft25hP617oXIBoS",
         "_id": null,
         "img": "icons/svg/dice-target.svg",
@@ -186,7 +154,7 @@
     "systemVersion": "2.0.3",
     "coreVersion": "10.288",
     "createdTime": 1668780077690,
-    "modifiedTime": 1668795179884,
+    "modifiedTime": 1669153839332,
     "lastModifiedBy": "4ft25hP617oXIBoS"
   }
 }
