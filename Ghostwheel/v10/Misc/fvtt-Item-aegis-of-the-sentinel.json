@@ -1,6 +1,7 @@
 {
   "name": "Aegis of the Sentinel",
   "type": "feat",
+  "img": "icons/svg/item-bag.svg",
   "system": {
     "description": {
       "value": "",
@@ -21,7 +22,7 @@
       "value": null,
       "width": null,
       "units": "",
-      "type": ""
+      "type": "self"
     },
     "range": {
       "value": null,
@@ -63,7 +64,6 @@
       "charged": false
     }
   },
-  "img": "icons/svg/item-bag.svg",
   "effects": [
     {
       "label": "Aegis of the Sentinel",
@@ -108,6 +108,9 @@
           },
           "onEachTurn": {
             "script": "console.log(\"on each turn\");\n\nif (game.combat?.combatant?.name === actor.name) { \n    actor.unsetFlag(\"world\", \"gw.applyAegis\");\n    return; \n}\n\n\nif (actor?.flags?.world?.gw?.applyAegis) {\n\n    actor.update({\"system.attributes.hp.temp\": actor.system.attributes.hp.temp + actor.classes.crusader.system.levels});\n\nactor.unsetFlag(\"world\", \"gw.applyAegis\");\n\n\n}"
+          },
+          "onCombatEnd": {
+            "script": "actor.unsetFlag(\"world\", \"gw.applyAegis\");\n\nactor.update({ \"system.attributes.hp.temp\": \n\n Math.max(0, actor.system.attributes.hp.temp - actor.classes.crusader.system.levels)\n\n});"
           }
         }
       }
@@ -154,7 +157,7 @@
     "systemVersion": "2.0.3",
     "coreVersion": "10.288",
     "createdTime": 1668780077690,
-    "modifiedTime": 1669153839332,
+    "modifiedTime": 1669155238830,
     "lastModifiedBy": "4ft25hP617oXIBoS"
   }
 }
