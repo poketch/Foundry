@@ -30,7 +30,7 @@
       "units": ""
     },
     "uses": {
-      "value": 19,
+      "value": 20,
       "max": "20",
       "per": "lr",
       "recovery": ""
@@ -191,7 +191,7 @@
         },
         "effectmacro": {
           "onTurnStart": {
-            "script": "const roll = new Roll(\"3d6\");\nconst speaker = ChatMessage.getSpeaker({ actor: actor});\n\nawait roll.toMessage({create: true, speaker: speaker, flavor: \"Death Save\"});"
+            "script": "let res = [];\n\nfor (const x of Array(3).keys()) {\n\n    const roll = new Roll(\"1d6\");\n    const speaker = ChatMessage.getSpeaker({ actor: actor });\n\n\n    if (x === 0) {\n        await roll.toMessage({ create: true, speaker: speaker, flavor: \"Death Save\" });\n\n    } else {\n        await roll.toMessage({ create: true, speaker: speaker });\n    }\n\n\n    const result = roll.total;\n    if (result === 6 || result === 1) {\n        res.push(result);\n    }\n}\n\n\nfor (const x of res) {\n    if (x === 1) {\n        await actor.update({\n            \"system.attributes.death.failure\" : actor.system.attributes.death.failure + 1,\n        });\n    }\n\n    if (x === 6) {\n        await actor.update({\n            \"system.attributes.death.success\" : actor.system.attributes.death.success + 1,\n        });\n    }\n}\n\n\n\n"
           }
         }
       },
@@ -289,7 +289,7 @@
     "systemVersion": "2.0.3",
     "coreVersion": "10.288",
     "createdTime": 1666827410048,
-    "modifiedTime": 1669397717567,
+    "modifiedTime": 1669400335173,
     "lastModifiedBy": "4ft25hP617oXIBoS"
   }
 }
