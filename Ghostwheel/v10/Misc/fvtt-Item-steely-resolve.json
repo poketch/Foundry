@@ -2,6 +2,68 @@
   "name": "Steely Resolve",
   "type": "feat",
   "img": "icons/svg/item-bag.svg",
+  "system": {
+    "description": {
+      "value": "",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "round"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "self"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": "",
+      "recovery": ""
+    },
+    "consume": {
+      "type": "attribute",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "flat"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
   "effects": [
     {
       "_id": "fm3c2zrl0t7z5ng4",
@@ -109,7 +171,7 @@
         "name": "Steely Resolve",
         "type": "script",
         "scope": "global",
-        "command": "if (game.combat === null) { return; }\n\nif (actor.flags?.world?.gw?.resolveEOT === true) { \n    \n    actor.unsetFlag(\"world\", \"gw.resolveEOT\");\n    return;\n} \n\nif (args[0] === \"onUpdateActor\" && actor.flags?.world?.gw?.resolveEOT !== true) {\n    const lastArg = args[args.length - 1];\n    let newHP = getProperty(lastArg.updates, \"system.attributes.hp.value\");\n    let oldHP = lastArg.targetActor.system.attributes.hp.value;\n    if (newHP && oldHP && newHP < oldHP) {\n        const damage = oldHP - newHP;\n        const resolvePoolField = lastArg.sourceActor.system.resources.primary;\n        if (!resolvePoolField) return;\n        let resolvePoolMax = resolvePoolField.max;\n        let resolvePool = resolvePoolField.value;\n        if (resolvePoolMax === undefined) return;\n        const absorbed = Math.min(damage, resolvePoolMax - resolvePool);\n        \n        if (absorbed) {\n            newHP = newHP + absorbed;\n            const speaker = ChatMessage.getSpeaker({ actor: lastArg.targetActor });\n            ChatMessage.create({\n                content: `${lastArg.originItem.name} absorbs ${absorbed} of ${damage} points of damage.<br> Hp -> ${newHP}<br>Resolve -> ${resolvePool + absorbed}/${resolvePoolMax}`,\n                speaker\n            });\n            lastArg.updates.system.attributes.hp.value = newHP;\n            actor.update({\"system.resources.primary.value\": resolvePool + absorbed})\n            actor.setFlag(\"world\", \"gw.makeAegis\", true);\n        }\n    }\n    return true;\n}",
+        "command": "if (game.combat === null) { return; }\n\nif (actor.flags?.world?.gw?.resolveEOT === true) { \n    \n    actor.unsetFlag(\"world\", \"gw.resolveEOT\");\n    return;\n} \n\nif (args[0] === \"onUpdateActor\" && actor.flags?.world?.gw?.resolveEOT !== true) {\n    const lastArg = args[args.length - 1];\n    let newHP = getProperty(lastArg.updates, \"system.attributes.hp.value\");\n    let oldHP = lastArg.targetActor.system.attributes.hp.value;\n    if (newHP && oldHP && newHP < oldHP) {\n        const damage = oldHP - newHP;\n        const resolvePoolField = lastArg.sourceActor.system.resources.primary;\n        if (!resolvePoolField) return;\n        let resolvePoolMax = resolvePoolField.max;\n        let resolvePool = resolvePoolField.value;\n        if (resolvePoolMax === undefined) return;\n        const absorbed = Math.min(damage, resolvePoolMax - resolvePool);\n        \n        if (absorbed) {\n            newHP = newHP + absorbed;\n            lastArg.updates.system.attributes.hp.value = newHP;\n            actor.update({\"system.resources.primary.value\": resolvePool + absorbed})\n            actor.setFlag(\"world\", \"gw.makeAegis\", true);\n        }\n    }\n    return true;\n}",
         "author": "4ft25hP617oXIBoS",
         "_id": null,
         "img": "icons/svg/dice-target.svg",
@@ -139,74 +201,12 @@
       "systemVersion": "2.0.3"
     }
   },
-  "system": {
-    "description": {
-      "value": "",
-      "chat": "",
-      "unidentified": ""
-    },
-    "source": "",
-    "activation": {
-      "type": "action",
-      "cost": 1,
-      "condition": ""
-    },
-    "duration": {
-      "value": 1,
-      "units": "round"
-    },
-    "target": {
-      "value": null,
-      "width": null,
-      "units": "",
-      "type": "self"
-    },
-    "range": {
-      "value": null,
-      "long": null,
-      "units": "self"
-    },
-    "uses": {
-      "value": null,
-      "max": "",
-      "per": "",
-      "recovery": ""
-    },
-    "consume": {
-      "type": "attribute",
-      "target": "",
-      "amount": null
-    },
-    "ability": "",
-    "actionType": "",
-    "attackBonus": "0",
-    "chatFlavor": "",
-    "critical": {
-      "threshold": null,
-      "damage": ""
-    },
-    "damage": {
-      "parts": [],
-      "versatile": ""
-    },
-    "formula": "",
-    "save": {
-      "ability": "",
-      "dc": null,
-      "scaling": "flat"
-    },
-    "requirements": "",
-    "recharge": {
-      "value": null,
-      "charged": false
-    }
-  },
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "2.0.3",
     "coreVersion": "10.288",
     "createdTime": 1668775152304,
-    "modifiedTime": 1669396428015,
+    "modifiedTime": 1669398740407,
     "lastModifiedBy": "4ft25hP617oXIBoS"
   }
 }
