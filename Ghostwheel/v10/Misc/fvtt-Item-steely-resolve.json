@@ -44,14 +44,14 @@
           "rest-effect": "Short Rest"
         },
         "effectmacro": {
-          "onEachTurn": {
-            "script": "if (actor.system.resources.primary.value == 0 || actor.system.resources.primary.value == null ||\nactor.system.resources.primary.value == undefined) { return; }\n\nawait actor.setFlag(\"world\", \"gw.resolveEOT\", true);\nawait actor.update({\n    \"system.attributes.hp.value\" : Math.max(0, actor.system.attributes.hp.value - actor.system.resources.primary.value), \n    \"system.resources.primary.value\" : 0,\n});"
-          },
           "onCombatEnd": {
             "script": "if (actor.system.resources.primary.value == 0 || actor.system.resources.primary.value == null ||\nactor.system.resources.primary.value == undefined) { return; }\n\nawait actor.setFlag(\"world\", \"gw.resolveEOT\", true);\nawait actor.update({\n    \"system.attributes.hp.value\" : Math.max(0, actor.system.attributes.hp.value - actor.system.resources.primary.value), \n    \"system.resources.primary.value\" : 0,\n});"
           },
           "onCombatStart": {
             "script": "await actor.update({\n    \"system.resources.primary.value\" : 0,\n});"
+          },
+          "onTurnEnd": {
+            "script": "if (actor.system.resources.primary.value == 0 || actor.system.resources.primary.value == null ||\nactor.system.resources.primary.value == undefined) { return; }\n\nawait actor.setFlag(\"world\", \"gw.resolveEOT\", true);\nawait actor.update({\n    \"system.attributes.hp.value\" : Math.max(0, actor.system.attributes.hp.value - actor.system.resources.primary.value), \n    \"system.resources.primary.value\" : 0,\n});"
           }
         }
       },
@@ -206,7 +206,7 @@
     "systemVersion": "2.0.3",
     "coreVersion": "10.288",
     "createdTime": 1668775152304,
-    "modifiedTime": 1669395546636,
+    "modifiedTime": 1669396428015,
     "lastModifiedBy": "4ft25hP617oXIBoS"
   }
 }
