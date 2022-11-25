@@ -104,7 +104,7 @@
         },
         "effectmacro": {
           "onTurnStart": {
-            "script": "actor.unsetFlag(\"world\", \"gw.applyAegis\");\n\nactor.update({ \"system.attributes.hp.temp\": \n\n Math.max(0, actor.system.attributes.hp.temp - actor.classes.crusader.system.levels)\n\n});"
+            "script": "actor.unsetFlag(\"world\", \"gw.applyAegis\");\nactor.unsetFlag(\"world\", \"gw.makeAegis\");\n\nactor.update({ \"system.attributes.hp.temp\": \n\n Math.max(0, actor.system.attributes.hp.temp - actor.classes.crusader.system.levels)\n\n});"
           },
           "onEachTurn": {
             "script": "if (game.combat?.combatant?.name === actor.name) { \n    actor.unsetFlag(\"world\", \"gw.applyAegis\");\n    return; \n}\n\n\nif (actor?.flags?.world?.gw?.applyAegis ||  actor?.flags?.world?.gw?.makeAegis ) {\n\n    actor.update({\"system.attributes.hp.temp\": actor.system.attributes.hp.temp + actor.classes.crusader.system.levels});\n\nactor.unsetFlag(\"world\", \"gw.applyAegis\");\nactor.unsetFlag(\"world\", \"gw.makeAegis\");\n\n\n}"
@@ -157,7 +157,7 @@
     "systemVersion": "2.0.3",
     "coreVersion": "10.288",
     "createdTime": 1668780077690,
-    "modifiedTime": 1669395549076,
+    "modifiedTime": 1669398569654,
     "lastModifiedBy": "4ft25hP617oXIBoS"
   }
 }
