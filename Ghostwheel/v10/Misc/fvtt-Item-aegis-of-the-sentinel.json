@@ -107,7 +107,7 @@
             "script": "actor.unsetFlag(\"world\", \"gw.applyAegis\");\n\nactor.update({ \"system.attributes.hp.temp\": \n\n Math.max(0, actor.system.attributes.hp.temp - actor.classes.crusader.system.levels)\n\n});"
           },
           "onEachTurn": {
-            "script": "console.log(\"on each turn\");\n\nif (game.combat?.combatant?.name === actor.name) { \n    actor.unsetFlag(\"world\", \"gw.applyAegis\");\n    return; \n}\n\n\nif (actor?.flags?.world?.gw?.applyAegis) {\n\n    actor.update({\"system.attributes.hp.temp\": actor.system.attributes.hp.temp + actor.classes.crusader.system.levels});\n\nactor.unsetFlag(\"world\", \"gw.applyAegis\");\n\n\n}"
+            "script": "if (game.combat?.combatant?.name === actor.name) { \n    actor.unsetFlag(\"world\", \"gw.applyAegis\");\n    return; \n}\n\n\nif (actor?.flags?.world?.gw?.applyAegis ||  actor?.flags?.world?.gw?.makeAegis ) {\n\n    actor.update({\"system.attributes.hp.temp\": actor.system.attributes.hp.temp + actor.classes.crusader.system.levels});\n\nactor.unsetFlag(\"world\", \"gw.applyAegis\");\nactor.unsetFlag(\"world\", \"gw.makeAegis\");\n\n\n}"
           },
           "onCombatEnd": {
             "script": "actor.unsetFlag(\"world\", \"gw.applyAegis\");\n\nactor.update({ \"system.attributes.hp.temp\": \n\n Math.max(0, actor.system.attributes.hp.temp - actor.classes.crusader.system.levels)\n\n});"
@@ -122,7 +122,7 @@
         "name": "Aegis of the Sentinel",
         "type": "script",
         "scope": "global",
-        "command": "// skip if character's turn\nif (game.combat === null) { return; }\n\nif (game.combat?.combatant?.name === actor.name) { return; }\n\nconst updates = args[1];\n\nif (updates.options?.dhp < 0) {\nactor.setFlag(\"world\", \"gw.applyAegis\", true);\n}",
+        "command": "// skip if character's turn\nif (game.combat === null) { return; }\n\nif (game.combat?.combatant?.name === actor.name) { return; }\n\nif (actor.flags?.world?.gw?.resolveEOT === true) { \n    \n    actor.unsetFlag(\"world\", \"gw.resolveEOT\");\n    return;\n} \n\nconst updates = args[1];\n\nif (updates.options?.dhp < 0 ) {\n    actor.setFlag(\"world\", \"gw.makeAegis\", true);\n}",
         "author": "4ft25hP617oXIBoS",
         "_id": null,
         "img": "icons/svg/dice-target.svg",
@@ -157,7 +157,7 @@
     "systemVersion": "2.0.3",
     "coreVersion": "10.288",
     "createdTime": 1668780077690,
-    "modifiedTime": 1669155238830,
+    "modifiedTime": 1669395549076,
     "lastModifiedBy": "4ft25hP617oXIBoS"
   }
 }

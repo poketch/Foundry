@@ -23,7 +23,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "icon": null,
+      "icon": "icons/svg/item-bag.svg",
       "label": "Steely Resolve",
       "origin": "Actor.xk4FgV1Ja3N3zGqI.Item.ApgOJlNLcpgcBtkl",
       "transfer": false,
@@ -42,6 +42,17 @@
         },
         "dnd5e-helpers": {
           "rest-effect": "Short Rest"
+        },
+        "effectmacro": {
+          "onEachTurn": {
+            "script": "if (actor.system.resources.primary.value == 0 || actor.system.resources.primary.value == null ||\nactor.system.resources.primary.value == undefined) { return; }\n\nawait actor.setFlag(\"world\", \"gw.resolveEOT\", true);\nawait actor.update({\n    \"system.attributes.hp.value\" : Math.max(0, actor.system.attributes.hp.value - actor.system.resources.primary.value), \n    \"system.resources.primary.value\" : 0,\n});"
+          },
+          "onCombatEnd": {
+            "script": "if (actor.system.resources.primary.value == 0 || actor.system.resources.primary.value == null ||\nactor.system.resources.primary.value == undefined) { return; }\n\nawait actor.setFlag(\"world\", \"gw.resolveEOT\", true);\nawait actor.update({\n    \"system.attributes.hp.value\" : Math.max(0, actor.system.attributes.hp.value - actor.system.resources.primary.value), \n    \"system.resources.primary.value\" : 0,\n});"
+          },
+          "onCombatStart": {
+            "script": "await actor.update({\n    \"system.resources.primary.value\" : 0,\n});"
+          }
         }
       },
       "tint": "#5cffb0"
@@ -98,7 +109,7 @@
         "name": "Steely Resolve",
         "type": "script",
         "scope": "global",
-        "command": "if (game.combat === null) {return;}\n\n\nlet updates = args[1].updates;\n\nconst actor = args[1].sourceActor;\nconst damage = args[1].options.dhp * -1;\nconst resource = actor.system.resources.primary;\n\nif (damage < (resource.max - resource.value)) {\n\nactor.update({\"system.resources.primary.value\": resource.value + damage})\n\nsetProperty(updates, \"system.attributes.hp.value\", updates.system.attributes.hp.value + damage);\n\n\n} else {\n\nconst diff = damage - (resource.max - resource.value);\n\nactor.update({\"system.resources.primary.value\": resource.max})\n\nsetProperty(updates, \"system.attributes.hp.value\", updates.system.attributes.hp.value + damage - diff);\n\n}",
+        "command": "if (game.combat === null) { return; }\n\nif (actor.flags?.world?.gw?.resolveEOT === true) { \n    \n    actor.unsetFlag(\"world\", \"gw.resolveEOT\");\n    return;\n} \n\nif (args[0] === \"onUpdateActor\" && actor.flags?.world?.gw?.resolveEOT !== true) {\n    const lastArg = args[args.length - 1];\n    let newHP = getProperty(lastArg.updates, \"system.attributes.hp.value\");\n    let oldHP = lastArg.targetActor.system.attributes.hp.value;\n    if (newHP && oldHP && newHP < oldHP) {\n        const damage = oldHP - newHP;\n        const resolvePoolField = lastArg.sourceActor.system.resources.primary;\n        if (!resolvePoolField) return;\n        let resolvePoolMax = resolvePoolField.max;\n        let resolvePool = resolvePoolField.value;\n        if (resolvePoolMax === undefined) return;\n        const absorbed = Math.min(damage, resolvePoolMax - resolvePool);\n        \n        if (absorbed) {\n            newHP = newHP + absorbed;\n            const speaker = ChatMessage.getSpeaker({ actor: lastArg.targetActor });\n            ChatMessage.create({\n                content: `${lastArg.originItem.name} absorbs ${absorbed} of ${damage} points of damage.<br> Hp -> ${newHP}<br>Resolve -> ${resolvePool + absorbed}/${resolvePoolMax}`,\n                speaker\n            });\n            lastArg.updates.system.attributes.hp.value = newHP;\n            actor.update({\"system.resources.primary.value\": resolvePool + absorbed})\n            actor.setFlag(\"world\", \"gw.makeAegis\", true);\n        }\n    }\n    return true;\n}",
         "author": "4ft25hP617oXIBoS",
         "_id": null,
         "img": "icons/svg/dice-target.svg",
@@ -195,7 +206,7 @@
     "systemVersion": "2.0.3",
     "coreVersion": "10.288",
     "createdTime": 1668775152304,
-    "modifiedTime": 1668794588328,
+    "modifiedTime": 1669395546636,
     "lastModifiedBy": "4ft25hP617oXIBoS"
   }
 }
