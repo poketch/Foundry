@@ -13,6 +13,8 @@ Adapted by Ghostwheel#0698
 
 # Usage
 
+Requestor needs to be set to the `ALL` setting under the settings tab.
+
 1. Import the `insp-shards` macro as a World Script (I use World Scripter for this, it works fine)
 
 2. Add the `Inspiration Shards` feature to the PCs in question
