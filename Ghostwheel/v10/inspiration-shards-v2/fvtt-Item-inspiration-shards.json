@@ -1,0 +1,223 @@
+{
+  "name": "Inspiration Shards",
+  "type": "feat",
+  "img": "icons/magic/control/buff-luck-fortune-green.webp",
+  "effects": [
+    {
+      "_id": "9kPKxYfLznahYDJe",
+      "changes": [
+        {
+          "key": "flags.midi-qol.optional.Inspiration.label",
+          "mode": 5,
+          "value": "Inspiration",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.Inspiration.save.all",
+          "mode": 2,
+          "value": "reroll-kh",
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": 100,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "icon": "icons/magic/control/buff-luck-fortune-green.webp",
+      "label": "GM Inspiration",
+      "origin": "Item.F58v9Hv37KF4JszF",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "noneName",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false,
+          "selfTarget": false,
+          "selfTargetAlways": true,
+          "durationExpression": ""
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "radius": null,
+          "aura": "None",
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        },
+        "core": {
+          "statusId": ""
+        }
+      },
+      "tint": null
+    }
+  ],
+  "flags": {
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Inspiration",
+          "type": "script",
+          "author": "g4WGw0lAZ3nIhapn",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "actor.deleteEmbeddedDocuments(\"Item\", [item.id])",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        },
+        "name": "GM Inspiration 10.0.10",
+        "type": "script",
+        "img": "icons/svg/dice-target.svg",
+        "scope": "global",
+        "command": "",
+        "sort": 0,
+        "ownership": {
+          "default": 0
+        },
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        },
+        "author": "4ft25hP617oXIBoS",
+        "_id": null,
+        "folder": null
+      }
+    },
+    "midi-qol": {
+      "onUseMacroName": "",
+      "effectActivation": false
+    },
+    "core": {
+      "sourceId": "Item.F58v9Hv37KF4JszF"
+    },
+    "cf": {
+      "id": "temp_1xw0kahfmt1",
+      "color": "#000000"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "link-item-resource-5e": {
+      "resource-link": ""
+    },
+    "exportSource": {
+      "world": "ddf-friends-characters",
+      "system": "dnd5e",
+      "coreVersion": "10.288",
+      "systemVersion": "2.0.3"
+    }
+  },
+  "system": {
+    "description": {
+      "value": "",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "special",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "5",
+      "per": "charges",
+      "recovery": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "2.0.3",
+    "coreVersion": "10.288",
+    "createdTime": 1661995926122,
+    "modifiedTime": 1669492198943,
+    "lastModifiedBy": "4ft25hP617oXIBoS"
+  }
+}
