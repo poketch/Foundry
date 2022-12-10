@@ -38,3 +38,12 @@ You do not gain the aegis if you already have a previous aegis affecting you.
 ### Usage 
 Requires: [Effect Macro](https://foundryvtt.com/packages/effectmacro)
 Add the Feature to sheet and roll the item. It will apply two effects, one of them (usually the second) does nothing and can be deleted.
+
+# Unlock Potential - Stamina Points
+
+### Description
+[Unlock Potential](https://docs.google.com/document/d/1p-sIcCQ0hEMJswoJmB-951A5Rryx2q9zYUoksOBLeSw/edit) by Ghostwheel#0698
+
+### Usage
+Requires: [Effect Macro](https://foundryvtt.com/packages/effectmacro)
+Plug and play. Macro automates the regaining of points.
