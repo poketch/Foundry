@@ -3,12 +3,12 @@ let effect = actor.effects.filter(eff => eff.label === item.name)[0];
 
 if (args[0].macroPass === "preItemRoll") {
 
-    item.flags.loaded ??= true
-    item.flags.properties ??= storeProperties(item.system.actionType, item.system.damage, item.system.range, item.system.consume);
+    item.setFlag("world", "gw.loaded", true);
+    item.setFlag("world", "gw.properties", storeProperties(item.system.actionType, item.system.damage, item.system.range, item.system.consume));
 
-    if (item.flags.misfired !== null || item.flags.misfired !== undefined) {
+    if (item.flags.world.gw.misfired !== null || item.flags.world.gw.misfired !== undefined) {
 
-        if (item.flags.misfired === "broken" && effect.disabled === true) {
+        if (item.flags.world.gw.misfired === "broken" && effect.disabled === true) {
 
             unloadGun(item);
 
@@ -16,9 +16,9 @@ if (args[0].macroPass === "preItemRoll") {
                 speaker: {
                     alias: actor.name
                 },
-                content: 
-                `<p style="text-align:center;font-style:italic;font-size:16px">
-                    ${actor.name}'s ${item.name} is completely destroyed and can't be fired again...
+                content:
+                    `<p style="text-align:center;font-style:italic;font-size:16px">
+                ${actor.name}'s ${item.name} is completely destroyed and can't be fired again...
                 </p>`
             });
 
@@ -27,26 +27,26 @@ if (args[0].macroPass === "preItemRoll") {
 
     }
 
-    if (item.flags.loaded === true) {
+    if (item.flags.world.gw.loaded === true) {
         loadGun(item);
     }
 
-    if (item.flags.loaded === false) {
+    if (item.flags.world.gw.loaded === false) {
 
-        item.flags.properties = storeProperties(item.system.actionType, item.system.damage, item.system.range, item.system.consume);
+        item.setFlag("world", "gw.properties", storeProperties(item.system.actionType, item.system.damage, item.system.range, item.system.consume));
         unloadGun(item);
 
         ChatMessage.create({
             speaker: {
                 alias: actor.name
             },
-            content: 
-            `<p style="text-align: center;font-style:italic;font-size: 16px">
+            content:
+                `<p style="text-align: center;font-style:italic;font-size: 16px">
                 ${actor.name} reloaded their ${item.name}
             </p>`
         });
 
-        item.flags.loaded = true;
+        item.setFlag("world", "gw.loaded", true);
         return;
     }
 }
@@ -62,51 +62,71 @@ if (args[0].macroPass === "preCheckHits") {
 
     // check for misfires
 
-    const misfireThreshold = item.flags['midi-qol'].fumbleThreshold;
+    let misfireThreshold = item.flags['midi-qol'].fumbleThreshold;
+
+    for (const effect of [...actor.effects]) {
+
+        if (effect.flags.babonus === undefined || effect.flags.babonus === null) continue;
+
+        for (const [_, bonus] of Object.entries(effect.flags.babonus.bonuses)) {
+
+            if (bonus.bonuses.fumbleRange === null || bonus.bonuses.fumbleRange === undefined) continue;
+
+            misfireThreshold += parseInt(bonus.bonuses.fumbleRange);
+        }
+
+    }
+
+    const ammo = await fromUuid(`${actor.uuid}.Item.${item.system.consume.target}`)
+    if (ammo.flags['midi-qol'].fumbleThreshold !== null || ammo.flags['midi-qol'].fumbleThreshold !== undefined) {
+        misfireThreshold += ammo.flags['midi-qol'].fumbleThreshold;
+    }
+
     const roll = workflow.attackRoll;
     const misFires = roll.dice[0].results.map(obj => obj.result <= misfireThreshold);
 
     if (misFires.includes(true)) {
 
         if (effect.disabled === false) {
-            
+
             // set flag to deactivate effect
-            item.flags.misfired = "misfire";
+            item.setFlag("world", "gw.misfired", "misfire");
         }
-        
+
         if (effect.disabled === true) {
-            
+
             // set flag to mark item as broken
-            item.flags.misfired = "broken";
+            item.setFlag("world", "gw.misfired", "broken");
         }
-        
+
         // make attack automiss
         workflow.setAttackRoll(await new Roll('1').evaluate());
         setProperty(workflow, "isFumble", true);
         setProperty(workflow, "attackRollHTML", await MidiQOL.midiRenderRoll(roll));
     }
 }
+
 if (args[0].macroPass === "postAttackRoll") {
 
-    if (item.flags.misfired === "misfire") {
+    if (item.flags.world.gw.misfired === "misfire") {
 
         // change message to reflect misfire, will only work if a misfire actually happened
         let message = game.messages.filter(i => i.flags['midi-qol']?.workflowId === workflow.uuid).at(-1);
         message.content = message.content.replace("badly misses", "misfired against");
 
-        item.flags.misfired = "okay";
+        item.setFlag("world", "gw.misfired", "okay");
 
         effectId = effect.id;
 
         await MidiQOL.socket().executeAsGM("updateEffects", { actorUuid: actor.uuid, updates: [{ "_id": effectId, "disabled": true }] });
 
-    } else if (item.flags.misfired === "broken") {
+    } else if (item.flags.world.gw.misfired === "broken") {
 
         let message = game.messages.filter(i => i.flags['midi-qol']?.workflowId === workflow.uuid).at(-1);
         message.content = message.content.replace("badly misses", `breaks ${item.name} misfiring against`);
     }
 
-    item.flags.loaded = false;
+    item.setFlag("world", "gw.loaded", false);
 }
 
 function storeProperties(actionType, damage, range, ammunition) {
@@ -131,8 +151,8 @@ function unloadGun(item) {
 
 function loadGun(item) {
 
-    setProperty(item.system, "actionType", item.flags.properties.actionType);
-    setProperty(item.system, "damage", item.flags.properties.damage);
-    setProperty(item.system, "range", item.flags.properties.range);
-    setProperty(item.system, "consume", item.flags.properties.ammunition);
+    setProperty(item.system, "actionType", item.flags.world.gw.properties.actionType);
+    setProperty(item.system, "damage", item.flags.world.gw.properties.damage);
+    setProperty(item.system, "range", item.flags.world.gw.properties.range);
+    setProperty(item.system, "consume", item.flags.world.gw.properties.ammunition);
 }
