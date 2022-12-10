@@ -1,0 +1,126 @@
+{
+  "name": "Martial Initiate",
+  "type": "feat",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "description": {
+      "value": "<h3>Maneuvers Known</h3><p>You begin your journey with knowledge of three martial maneuvers. The paths available to you are from the Diamond Mind, Iron Heart, Stone Dragon, Tiger Claw, and White Raven disciplines. Once you know a maneuver, you must ready it before you can use it (see Maneuvers Readied, below). You learn additional maneuvers at higher levels, as shown on the Maneuvers Known column of the Warblade table.</p><p>See the maneuvers description for more information on maneuvers, which rank of maneuvers you are able to take, and the prerequisites for specific maneuvers. At 3rd level and every two levels afterwards (5th, 7th, 9th, and so on), you may replace one of your maneuvers with another maneuver that you qualify for, and at 4th, 10th, 16th, and 20th levels, you may choose to replace up to a number of maneuvers and stances equal to twice your proficiency bonus, in both cases losing access to chosen maneuvers or stances and instead learning others. You must be able to fulfill any prerequisites for maneuvers and stances you know after replacing in both cases, including previous maneuvers in a specific path, and so on.</p><h3>Maneuvers Readied</h3><p>You can ready all three of the maneuvers you know at 1st level, but as you advance in level and learn more maneuvers, you must choose which maneuvers to ready. You ready your maneuvers by exercising for 5 minutes. The maneuvers you choose remain readied until you decide to exercise again and change them. You need not sleep or rest for any long period of time to ready your maneuvers; any time you spend 5 minutes in practice, you can change your readied maneuvers.</p><p>You begin an encounter with all your readied maneuvers primed, regardless of how many times you might have already used them since you chose them. When you initiate a maneuver, you expend it, so each of your readied maneuvers can be used once (until you prime them, as described below).</p><p>You can prime all expended maneuvers by spending an action to take the Attack action or to do nothing else (such as executing a quick, harmless flourish with your weapon). You cannot initiate a maneuver or change your stance on the same turn as which you prime your expended maneuvers, or until the start of your next turn. You may ready additional maneuvers at higher levels, as shown on the Maneuvers Readied column of the Warblade table.</p><h3>Stances Known</h3><p>At 2nd level you begin play with knowledge of two stances from any discipline open to warblades for which you meet the prerequisites. You learn additional stances as shown on the Stances Known column of the Warblade table. Unlike maneuvers, stances are not expended, and you do not have to ready them. All the stances you know are available to you at all times, and you can change the stance you are currently using as a bonus action. You are unable to concentrate on a spell while you are in a stance and are unable to maintain a stance while raging.</p><p>Saving Throws</p><p>Some of your martial maneuvers require your target to make a saving throw to resist the maneuver's effects. The saving throw DC is calculated as follows:</p><p><strong>Martial Maneuver save DC</strong> = 8 + your proficiency modifier + your Strength or Intelligence modifier</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [
+    {
+      "label": "Martial Initiate",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.7LNTK0REcneta3yk",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "Se3a5G8hMUASmscw",
+      "changes": [],
+      "tint": null,
+      "transfer": true,
+      "flags": {
+        "times-up": {},
+        "dae": {
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "core": {
+          "statusId": ""
+        },
+        "effectmacro": {
+          "onCombatStart": {
+            "script": "const tag = \"NFM\"; //non-flourish-manuever\nconst items = actor.items.filter(it => it.system.activation?.condition === tag);\n\nfor (const item of items) {\n    await item.update({ \"system.uses.value\": item.system.uses.max });\n}\n\n\n\n\n\n\n"
+          }
+        }
+      }
+    }
+  ],
+  "flags": {
+    "core": {
+      "sourceId": "Actor.giqm4oNFLfPKLkP4.Item.XEQnX17chagHdvNE"
+    },
+    "exportSource": {
+      "world": "ddf-friends-characters",
+      "system": "dnd5e",
+      "coreVersion": "10.288",
+      "systemVersion": "2.0.3"
+    }
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "2.0.3",
+    "coreVersion": "10.288",
+    "createdTime": 1670425111939,
+    "modifiedTime": 1670694956363,
+    "lastModifiedBy": "4ft25hP617oXIBoS"
+  }
+}
