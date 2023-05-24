@@ -6,10 +6,10 @@ if (args[0].macroPass === "preItemRoll") {
     item.setFlag("world", "gw.loaded", true);
     item.setFlag("world", "gw.properties", storeProperties(item.system.actionType, item.system.damage, item.system.range, item.system.consume));
 
-    if (item.flags.world.gw.misfired !== null || item.flags.world.gw.misfired !== undefined) {
 
-        if (item.flags.world.gw.misfired === "broken" && effect.disabled === true) {
+    if (item.getFlag("world", "gw.misfired") !== null || item.getFlag("world", "gw.misfired") !== undefined) {
 
+        if (item.getFlag("world", "gw.misfired") === "broken" && effect.disabled === true) {
             unloadGun(item);
 
             ChatMessage.create({
@@ -27,11 +27,11 @@ if (args[0].macroPass === "preItemRoll") {
 
     }
 
-    if (item.flags.world.gw.loaded === true) {
+    if (item.getFlag("world", "gw.loaded") === true) {
         loadGun(item);
     }
 
-    if (item.flags.world.gw.loaded === false) {
+    if (item.getFlag("world", "gw.loaded") === false) {
 
         item.setFlag("world", "gw.properties", storeProperties(item.system.actionType, item.system.damage, item.system.range, item.system.consume));
         unloadGun(item);
@@ -108,7 +108,7 @@ if (args[0].macroPass === "preCheckHits") {
 
 if (args[0].macroPass === "postAttackRoll") {
 
-    if (item.flags.world.gw.misfired === "misfire") {
+    if (item.getFlag("world", "gw.misfired") === "misfire") {
 
         // change message to reflect misfire, will only work if a misfire actually happened
         let message = game.messages.filter(i => i.flags['midi-qol']?.workflowId === workflow.uuid).at(-1);
@@ -120,7 +120,7 @@ if (args[0].macroPass === "postAttackRoll") {
 
         await MidiQOL.socket().executeAsGM("updateEffects", { actorUuid: actor.uuid, updates: [{ "_id": effectId, "disabled": true }] });
 
-    } else if (item.flags.world.gw.misfired === "broken") {
+    } else if (item.getFlag("world", "gw.loaded") === "broken") {
 
         let message = game.messages.filter(i => i.flags['midi-qol']?.workflowId === workflow.uuid).at(-1);
         message.content = message.content.replace("badly misses", `breaks ${item.name} misfiring against`);
