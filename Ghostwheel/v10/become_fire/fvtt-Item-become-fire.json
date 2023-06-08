@@ -1,0 +1,151 @@
+{
+  "name": "Become Fire",
+  "type": "spell",
+  "img": "https://i.imgur.com/iUqZWF8.png",
+  "system": {
+    "description": {
+      "value": "<p>You Become a burst of elemental flames. Until the start of your next turn, you gain the following benefits:</p><ul><li><p>You are resistant to bludgeoning, piercing and slashing damage from nonmagical attacks.</p></li><li><p>You can move through the space of other creatures and ignore difficult terrain; the first time you enter the space of another creature on a turn, it takes 1d6 fire damage.</p></li><li><p>Once during your turn when you roll fire damage, you can maximize the value of one die of fire damage.</p></li></ul>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "bonus",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": "1",
+      "units": "round"
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "self"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": "",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 2,
+    "school": "trs",
+    "components": {
+      "vocal": true,
+      "somatic": true,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "rollOther": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false
+    },
+    "itemacro": {
+      "macro": {
+        "name": "Become Fire",
+        "type": "script",
+        "scope": "global",
+        "command": "const FEATURE_IMAGE = \"icons/magic/fire/explosion-fireball-medium-orange.webp\";\n\nconst featureData = {\n    \"name\": \"Become Fire - Ignite\",\n    \"type\": \"feat\",\n    \"img\": FEATURE_IMAGE,\n    \"system\": {\n        \"description\": {\n            \"value\": \"<p style=\\\"box-sizing:border-box;user-select:text;margin:0.5em 0px\\\"><span style=\\\"font-family:Signika, sans-serif\\\">You can move through the space of other creatures and ignore difficult terrain; the first time you enter the space of another creature on a turn, it takes 1d6 fire damage.</span></p>\",\n            \"chat\": \"\",\n            \"unidentified\": \"\"\n        },\n        \"source\": \"\",\n        \"activation\": {\n            \"type\": \"special\",\n            \"cost\": null,\n            \"condition\": \"You have cast the Become Fire Spell\"\n        },\n        \"duration\": {\n            \"value\": \"\",\n            \"units\": \"inst\"\n        },\n        \"cover\": null,\n        \"crewed\": false,\n        \"target\": {\n            \"value\": null,\n            \"width\": null,\n            \"units\": \"\",\n            \"type\": \"creature\"\n        },\n        \"range\": {\n            \"value\": null,\n            \"long\": null,\n            \"units\": \"\"\n        },\n        \"uses\": {\n            \"value\": null,\n            \"max\": \"\",\n            \"per\": null,\n            \"recovery\": \"\"\n        },\n        \"consume\": {\n            \"type\": \"\",\n            \"target\": null,\n            \"amount\": null\n        },\n        \"ability\": \"\",\n        \"actionType\": \"other\",\n        \"attackBonus\": \"\",\n        \"chatFlavor\": \"\",\n        \"critical\": {\n            \"threshold\": null,\n            \"damage\": \"\"\n        },\n        \"damage\": {\n            \"parts\": [\n                [\n                    \"1d6\",\n                    \"fire\"\n                ]\n            ],\n            \"versatile\": \"\"\n        },\n        \"formula\": \"\",\n        \"save\": {\n            \"ability\": \"\",\n            \"dc\": null,\n            \"scaling\": \"spell\"\n        },\n        \"type\": {\n            \"value\": \"\",\n            \"subtype\": \"\"\n        },\n        \"requirements\": \"\",\n        \"recharge\": {\n            \"value\": null,\n            \"charged\": false\n        }\n    },\n    \"effects\": [],\n    \"sort\": 200000,\n    \"ownership\": {\n        \"default\": 0,\n        \"4ft25hP617oXIBoS\": 3\n    },\n    \"flags\": {\n        \"midi-qol\": {\n            \"effectActivation\": false,\n            \"fumbleThreshold\": null\n        },\n        \"midiProperties\": {\n            \"nodam\": false,\n            \"fulldam\": false,\n            \"halfdam\": false,\n            \"autoFailFriendly\": false,\n            \"autoSaveFriendly\": false,\n            \"rollOther\": false,\n            \"critOther\": false,\n            \"offHandWeapon\": false,\n            \"magicdam\": false,\n            \"magiceffect\": false,\n            \"concentration\": false,\n            \"toggleEffect\": false,\n            \"ignoreTotalCover\": false\n        },\n        \"core\": {\n            \"sourceId\": \"Item.1TAdE8o00cSHNrUE\"\n        }\n    },\n    \"_stats\": {\n        \"systemId\": \"dnd5e\",\n        \"systemVersion\": \"2.2.1\",\n        \"coreVersion\": \"10.291\",\n        \"createdTime\": 1686147535189,\n        \"modifiedTime\": 1686157934417,\n        \"lastModifiedBy\": \"4ft25hP617oXIBoS\"\n    },\n    \"_id\": \"tl9hcRrIyKRRPmAH\"\n}\n\nasync function becomeFire(token, workflow) {\n\n    async function effectMacro() {\n        await warpgate.revert(token.document, 'Become Fire');\n    }\n\n    let targetToken = workflow.token;\n    let effectData = {\n        'label': \"Become Fire\",\n        'icon': workflow.item.img,\n        'duration': {\n            \"rounds\": 1,\n        },\n        'origin': workflow.item.uuid,\n        'flags': {\n            'effectmacro': {\n                'dae': {\n                    'specialDuration': ['turnstartSource']\n                },\n                'onDelete': {\n                    'script': `(${effectMacro})()`\n                }\n            },\n        }\n    };\n    let updates = {\n        'embedded': {\n            'Item': {\n                [featureData.name]: featureData\n            },\n            'ActiveEffect': {\n                [featureData.name]: effectData\n            }\n        }\n    };\n    let options = {\n        'permanent': false,\n        'name': \"Become Fire\",\n        'description': \"Become Fire\"\n    };\n    await warpgate.mutate(targetToken.document, updates, {}, options);\n}\n\nawait becomeFire(token, workflow)",
+        "author": "4ft25hP617oXIBoS",
+        "_id": null,
+        "img": "icons/svg/dice-target.svg",
+        "folder": null,
+        "sort": 0,
+        "ownership": {
+          "default": 0
+        },
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Item.zdJQcvcXHFjYuEg2"
+    },
+    "exportSource": {
+      "world": "ddf-friends-characters",
+      "system": "dnd5e",
+      "coreVersion": "10.291",
+      "systemVersion": "2.2.1"
+    }
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "2.2.1",
+    "coreVersion": "10.291",
+    "createdTime": 1686070136943,
+    "modifiedTime": 1686158417110,
+    "lastModifiedBy": "4ft25hP617oXIBoS"
+  }
+}
