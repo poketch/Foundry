@@ -127,7 +127,7 @@
         }
       },
       "tint": null,
-      "name": "Wounded",
+      "name": "Gravely Wounded",
       "description": "",
       "statuses": []
     },
@@ -200,7 +200,7 @@
             "script": "let res = [];\nconst speaker = ChatMessage.getSpeaker({ actor: actor });\n\nconst success = `${actor.name} has rolled a critical success and recovers to one hp!`;\n\nfor (const x of Array(3).keys()) {\n\n    const roll = new Roll(\"1d6\");\n\n    if (x === 0) {\n        await roll.toMessage({ create: true, speaker: speaker, flavor: \"Death Save\" });\n\n    } else {\n        await roll.toMessage({ create: true, speaker: speaker });\n    }\n\n    const result = roll.total;\n    if (result === 6 || result === 1) {\n        res.push(result);\n    }\n}\n\nif (res.filter(n => n === 6).length > 1) {\n    \n    ChatMessage.create({\n        speaker: {\n            alias: actor.name\n        },\n        content:\n            `<p style=\"text-align:center;font-style:italic;font-size:16px\">\n        ${success}\n        </p>`\n    });\n\n    return;\n\n}\n\n\nfor (const x of res) {\n    if (x === 1) {\n        await actor.update({\n            \"system.attributes.death.failure\": actor.system.attributes.death.failure + 1,\n        });\n    }\n\n    if (x === 6) {\n        await actor.update({\n            \"system.attributes.death.success\": actor.system.attributes.death.success + 1,\n        });\n    }\n}\n\n\n\n"
           },
           "onCreate": {
-            "script": "const newHp = actor.system.attributes.hp.max + actor.system.attributes.hp.tempmax;\n\nawait actor.update({'system.attributes.hp.value': newHp});"
+            "script": "const newHp = actor.system.attributes.hp.max + actor.system.attributes.hp.tempmax;\n\nawait actor.update({'system.attributes.hp.value': newHp});\n\n\nactor.deleteEmbeddedDocuments(\"ActiveEffect\", [Array.from(actor.effects).filter(e => e.label === \"Prone\")[0].id]);"
           }
         }
       },
@@ -210,7 +210,7 @@
       "statuses": []
     }
   ],
-  "folder": "PcPh9t3BQgPmlx3z",
+  "folder": null,
   "flags": {
     "magicitems": {
       "enabled": false,
@@ -232,7 +232,7 @@
     "midi-qol": {
       "effectActivation": false,
       "forceCEOff": true,
-      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "onUseMacroName": "",
       "fumbleThreshold": null
     },
     "midiProperties": {
@@ -264,7 +264,7 @@
     "systemVersion": "2.2.1",
     "coreVersion": "11.302",
     "createdTime": 1666827410048,
-    "modifiedTime": 1687639993990,
+    "modifiedTime": 1687644063622,
     "lastModifiedBy": "HskkmZgPdxLcpT10"
   }
 }
