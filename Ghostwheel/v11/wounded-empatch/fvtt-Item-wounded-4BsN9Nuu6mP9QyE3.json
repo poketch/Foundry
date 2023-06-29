@@ -151,6 +151,18 @@
           "mode": 2,
           "value": "1",
           "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.grants.disadvantage.attack.all",
+          "mode": 2,
+          "value": "1",
+          "priority": 20
+        },
+        {
+          "key": "system.traits.dr.all",
+          "mode": 0,
+          "value": "1",
+          "priority": 20
         }
       ],
       "disabled": false,
