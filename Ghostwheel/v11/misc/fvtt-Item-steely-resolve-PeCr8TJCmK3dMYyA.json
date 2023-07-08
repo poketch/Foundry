@@ -1,0 +1,219 @@
+{
+  "name": "Steely Resolve",
+  "type": "feat",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "description": {
+      "value": "",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": "1",
+      "units": "round"
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "self"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": ""
+    },
+    "consume": {
+      "type": "attribute",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "",
+    "attackBonus": "",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "flat"
+    },
+    "type": {
+      "value": "",
+      "subtype": ""
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [
+    {
+      "_id": "fm3c2zrl0t7z5ng4",
+      "changes": [
+        {
+          "key": "flags.dae.onUpdateSource",
+          "mode": 0,
+          "value": "Steely Resolve, ItemMacro, system.attributes.hp.value",
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "rounds": 100000,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "icon": "icons/svg/item-bag.svg",
+      "origin": "Actor.xk4FgV1Ja3N3zGqI.Item.ApgOJlNLcpgcBtkl",
+      "transfer": false,
+      "flags": {
+        "core": {
+          "statusId": "None"
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "specialDuration": [],
+          "transfer": false,
+          "selfTarget": false,
+          "macroRepeat": "none",
+          "selfTargetAlways": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Short Rest"
+        },
+        "effectmacro": {
+          "onCombatEnd": {
+            "script": "if (actor.system.resources.primary.value == 0 || actor.system.resources.primary.value == null ||\nactor.system.resources.primary.value == undefined) { return; }\n\nawait actor.setFlag(\"world\", \"gw.resolveEOT\", true);\nawait actor.update({\n    \"system.attributes.hp.value\" : Math.max(0, actor.system.attributes.hp.value - actor.system.resources.primary.value), \n    \"system.resources.primary.value\" : 0,\n});"
+          },
+          "onCombatStart": {
+            "script": "await actor.update({\n    \"system.resources.primary.value\" : 0,\n});"
+          },
+          "onTurnEnd": {
+            "script": "if (actor.system.resources.primary.value == 0 || actor.system.resources.primary.value == null ||\nactor.system.resources.primary.value == undefined) { return; }\n\nawait actor.setFlag(\"world\", \"gw.resolveEOT\", true);\nawait actor.update({\n    \"system.attributes.hp.value\" : Math.max(0, actor.system.attributes.hp.value - actor.system.resources.primary.value), \n    \"system.resources.primary.value\" : 0,\n});"
+          }
+        }
+      },
+      "tint": "#5cffb0",
+      "name": "Steely Resolve",
+      "description": "",
+      "statuses": []
+    }
+  ],
+  "folder": "ZTD7xbWQM0ytJoBF",
+  "flags": {
+    "magicitems": {
+      "enabled": true,
+      "equipped": true,
+      "attuned": true,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l",
+      "spells": {
+        "0": {
+          "id": "95K2aUhAGV9qXjnf",
+          "name": "Bane",
+          "pack": "dnd5e.spells",
+          "img": "systems/dnd5e/icons/spells/rip-magenta-2.jpg",
+          "baseLevel": "1",
+          "level": "1",
+          "consumption": "1",
+          "upcast": "1",
+          "upcastCost": "1",
+          "flatDc": true,
+          "dc": "13 + @pb"
+        }
+      }
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "fumbleThreshold": null
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false
+    },
+    "itemacro": {
+      "macro": {
+        "name": "Steely Resolve",
+        "type": "script",
+        "scope": "global",
+        "command": "if (game.combat === null) { return; }\n\nif (actor.getFlag(\"world\", \"gw.resolveEOT\") === true) { \n    \n    actor.unsetFlag(\"world\", \"gw.resolveEOT\");\n    return;\n} \n\nif (args[0] === \"onUpdateActor\" && actor.getFlag(\"world\", \"gw.resolveEOT\") !== true) {\n    const lastArg = args[args.length - 1];\n    let newHP = getProperty(lastArg.updates, \"system.attributes.hp.value\");\n    let oldHP = lastArg.targetActor.system.attributes.hp.value;\n    if (newHP && oldHP && newHP < oldHP) {\n        const damage = oldHP - newHP;\n        const resolvePoolField = lastArg.sourceActor.system.resources.primary;\n        if (!resolvePoolField) return;\n        let resolvePoolMax = resolvePoolField.max;\n        let resolvePool = resolvePoolField.value;\n        if (resolvePoolMax === undefined) return;\n        const absorbed = Math.min(damage, resolvePoolMax - resolvePool);\n        \n        if (absorbed) {\nconsole.log(newHP)\n            newHP = newHP + absorbed;\nconsole.log(newHP)\n            lastArg.updates.system.attributes.hp.value = newHP;\n            actor.update({\"system.resources.primary.value\": resolvePool + absorbed})\n            actor.setFlag(\"world\", \"gw.makeAegis\", true);\n        }\n    }\n    return true;\n}",
+        "author": "HskkmZgPdxLcpT10",
+        "_id": null,
+        "img": "icons/svg/dice-target.svg",
+        "folder": null,
+        "sort": 0,
+        "ownership": {
+          "default": 0
+        },
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    },
+    "core": {},
+    "exportSource": {
+      "world": "v11-dev",
+      "system": "dnd5e",
+      "coreVersion": "11.302",
+      "systemVersion": "2.2.1"
+    }
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "2.2.1",
+    "coreVersion": "11.302",
+    "createdTime": 1668775152304,
+    "modifiedTime": 1688825742553,
+    "lastModifiedBy": "HskkmZgPdxLcpT10"
+  }
+}

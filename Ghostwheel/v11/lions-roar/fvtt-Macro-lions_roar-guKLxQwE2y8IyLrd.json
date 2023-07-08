@@ -1,0 +1,28 @@
+{
+  "name": "lions_roar",
+  "type": "script",
+  "author": "4ft25hP617oXIBoS",
+  "img": "icons/svg/dice-target.svg",
+  "scope": "global",
+  "command": "// Controls\n\nconst insp_name = \"Lion's Roar - Inspiration\";\nconst mark_name = \"Lion's Roar - Marked\";\nconst insp_icon = \"icons/svg/item-bag.svg\";\nlet damage = \"1d6\";\n\n\n// Main Funciton\nif (args[0] === \"off\") {\n    const mark_flag = \"gw.lionsRoar.marked\";\n    const insp_flag = \"gw.lionsRoar.inspiration\";\n    const message_list = game.messages.filter(msg => msg.speaker.alias == actor.name);\n    const workflow = MidiQOL.Workflow.getWorkflow(message_list[message_list.length - 1].data.flags['midi-qol'].workflowId);\n    const targets = [...workflow.targets];\n\nfor (const target of targets) {\n\n    //if you missed, move on\n    if (!Array.from(workflow.hitTargets).includes(target)) { continue; }\n\n    const tactor = target.actor;\n    const tactor_effects = tactor.effects.filter(eff => eff.name === mark_name);\n    //if you hit, and the target has no qualifying effect, reapply effect.\n    if (tactor_effects.length === 0) {\n        reapply(actor);\n        continue;\n    } else {\n        if (workflow.isCritical === true) { damage = `${damage[0] * 2}d6`; };\n        damage_roll = await new Roll(damage).evaluate({ async: true });\n\n        new MidiQOL.DamageOnlyWorkflow(\n            workflow.actor,\n            workflow.token,\n            damage_roll.total,\n            workflow.damageDetail[0].type,\n            target ? [target] : [],\n            damage_roll,\n            { flavor: \"Lion's Roar - Inspiration\", itemCardId: workflow.itemCardId }\n        );\n    }\n\n}\n\nfunction reapply(actor) {\n\n        const insp = {\n            label: insp_name,\n            icon: insp_icon,\n            duration: {rounds: 1},\n            flags: {\n                dae: { specialDuration: ['turnStartSource', '1Hit:mwak', '1Hit:rwak', '1Hit:rsak', '1Hit:mwak'] }\n            },\n            changes: [\n                { key: \"macro.execute\", mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: \"lions_roar\" }\n            ],\n        }\n\n        MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: actor.uuid, effects: [insp] });\n    }\n}",
+  "folder": null,
+  "flags": {
+    "combat-utility-belt": {
+      "macroTrigger": ""
+    },
+    "exportSource": {
+      "world": "v11-dev",
+      "system": "dnd5e",
+      "coreVersion": "11.302",
+      "systemVersion": "2.2.1"
+    }
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "2.2.1",
+    "coreVersion": "11.302",
+    "createdTime": null,
+    "modifiedTime": 1688825438156,
+    "lastModifiedBy": "HskkmZgPdxLcpT10"
+  }
+}
