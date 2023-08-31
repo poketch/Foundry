@@ -1,0 +1,135 @@
+{
+  "name": "Unlock Potential - Stamina Points",
+  "type": "feat",
+  "img": "icons/magic/light/explosion-beam-impact-silhouette.webp",
+  "system": {
+    "description": {
+      "value": "<p>You unlock a new well of power deep within you, represented by a number of stamina points. You get one stamina point, and you can regain one expended stamina point when you roll initiative if you have spent at least one stamina point since the last time you have regained stamina points.</p><p>In addition, you gain the following benefits; you can spend one stamina point to activate it, and cannot spend more than one stamina point each turn.</p><ul><li><p>You gain an additional action this turn. It can only be used to take the Attack action (making at most one attack), the Dash action, or the Disengage action.</p></li></ul><p>You regain all expended stamina points at the end of a long rest.</p><p>Finally, increase one of your ability scores by 1, up to a maximum of 20.</p><p><strong>Special:</strong> You may take this feat more than once. Every time you take it, increase the number of stamina points available to you by one (up to a maximum of three) and choose another one of the benefits above which you can use a stamina point to activate.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "special",
+      "cost": null,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": ""
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 1,
+      "max": "2",
+      "per": "lr",
+      "recovery": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": "",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "type": {
+      "value": "",
+      "subtype": ""
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [
+    {
+      "icon": "icons/magic/light/explosion-beam-impact-silhouette.webp",
+      "origin": "Actor.A3qYASauHOv5hmWy.Item.SId0CSwtX2TuB0el",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "EWgyRzghNATl6xq1",
+      "changes": [],
+      "tint": null,
+      "transfer": true,
+      "flags": {
+        "effectmacro": {
+          "onCombatStart": {
+            "script": "if ( actor.getFlag(\"world\", \"gw.stamina\") > origin.system.uses.value || origin.system.uses.value === 0 ) {\n\n    await origin.update({\n        \"system.uses.value\": Math.min(origin.system.uses.value + 1, origin.system.uses.max),\n    });\n}\n\nactor.setFlag(\"world\", \"gw.stamina\", origin.system.uses.value);\n"
+          }
+        },
+        "dae": {
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "core": {
+          "statusId": ""
+        }
+      },
+      "name": "Unlock Potential - Stamina Points",
+      "description": "",
+      "statuses": []
+    }
+  ],
+  "folder": "sQ6E5ZlEZEURE64q",
+  "flags": {
+    "link-item-resource-5e": {
+      "resource-link": ""
+    },
+    "core": {},
+    "exportSource": {
+      "world": "ddf-friends-characters",
+      "system": "dnd5e",
+      "coreVersion": "11.308",
+      "systemVersion": "2.3.1"
+    }
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "2.0.3",
+    "coreVersion": "10.288",
+    "createdTime": 1668451192797,
+    "modifiedTime": 1670692933766,
+    "lastModifiedBy": "4ft25hP617oXIBoS"
+  }
+}
