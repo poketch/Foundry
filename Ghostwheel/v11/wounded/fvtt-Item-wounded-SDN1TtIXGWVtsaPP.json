@@ -1,0 +1,308 @@
+{
+  "folder": "sQ6E5ZlEZEURE64q",
+  "name": "Wounded",
+  "type": "feat",
+  "img": "icons/skills/wounds/injury-triple-slash-bleed.webp",
+  "system": {
+    "description": {
+      "value": "<p>Whenever you drop to 0 hit points, you gain a stack of Wounded. Each stack of this condition reduces your maximum health by an amount equal to twice your level.</p>\n<p>In addition, you gain the <a href=\"https://docs.google.com/document/d/1kdqHLKMueyz6GvnSPi74KK60i94BidXnq03Sliuh8iY/edit?usp=sharing\" target=\"_blank\" rel=\"noopener\">dying</a> condition.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "special",
+      "cost": null,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": ""
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 20,
+      "max": "20",
+      "per": "lr",
+      "recovery": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": "",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "type": {
+      "value": "",
+      "subtype": ""
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [
+    {
+      "_id": "lc5cn3lmg2c7we61",
+      "changes": [
+        {
+          "key": "system.attributes.hp.tempmax",
+          "mode": 2,
+          "value": "- (@item.uses.max - @item.uses.value) * @details.level * 2",
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "icon": "icons/skills/wounds/injury-triple-slash-bleed.webp",
+      "origin": "Actor.R63VzOvwMCufTSjy.Item.Z5DzcxLplGjM7ObZ",
+      "transfer": false,
+      "flags": {
+        "core": {
+          "statusId": ""
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "longRest"
+          ],
+          "transfer": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "showIcon": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "name": "Gravely Wounded",
+      "description": "",
+      "statuses": []
+    },
+    {
+      "_id": "4gcnmqee7p4fouc0",
+      "changes": [
+        {
+          "key": "system.attributes.movement.all",
+          "mode": 0,
+          "value": "* 0.5",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.disadvantage.ability.check.all",
+          "mode": 2,
+          "value": "1",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.disadvantage.attack.all",
+          "mode": 2,
+          "value": "1",
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "icon": "icons/skills/wounds/blood-drip-droplet-red.webp",
+      "origin": "Actor.lMWrdq3QmYPiVHBX.Item.Fr7hpx0ySzcTSATj",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false,
+          "selfTargetAlways": false
+        },
+        "core": {
+          "statusId": "Dying"
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        },
+        "effectmacro": {
+          "onTurnStart": {
+            "script": "let res = [];\nconst speaker = ChatMessage.getSpeaker({ actor: actor });\n\nconst success = `${actor.name} has rolled a critical success and recovers to one hp!`;\n\nfor (const x of Array(3).keys()) {\n\n    const roll = new Roll(\"1d6\");\n\n    if (x === 0) {\n        await roll.toMessage({ create: true, speaker: speaker, flavor: \"Death Save\" });\n\n    } else {\n        await roll.toMessage({ create: true, speaker: speaker });\n    }\n\n    const result = roll.total;\n    if (result === 6 || result === 1) {\n        res.push(result);\n    }\n}\n\nif (res.filter(n => n === 6).length > 1) {\n    \n    ChatMessage.create({\n        speaker: {\n            alias: actor.name\n        },\n        content:\n            `<p style=\"text-align:center;font-style:italic;font-size:16px\">\n        ${success}\n        </p>`\n    });\n\n    return;\n\n}\n\n\nfor (const x of res) {\n    if (x === 1) {\n        await actor.update({\n            \"system.attributes.death.failure\": actor.system.attributes.death.failure + 1,\n        });\n    }\n\n    if (x === 6) {\n        await actor.update({\n            \"system.attributes.death.success\": actor.system.attributes.death.success + 1,\n        });\n    }\n}\n\n\n\n"
+          }
+        }
+      },
+      "tint": null,
+      "name": "Dying",
+      "description": "",
+      "statuses": []
+    }
+  ],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "link-item-resource-5e": {
+      "resource-link": ""
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "forceCEOff": true,
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "fumbleThreshold": null
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false,
+      "autoFailFriendly": false,
+      "offHandWeapon": false,
+      "autoSaveFriendly": false
+    },
+    "core": {},
+    "exportSource": {
+      "world": "ddf-friends-characters",
+      "system": "dnd5e",
+      "coreVersion": "11.308",
+      "systemVersion": "2.3.1"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Wounded",
+          "type": "script",
+          "author": "4ft25hP617oXIBoS",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "let newHp = actor.data.data.attributes.hp.max + actor.data.data.attributes.hp.tempmax;\n\nactor.update({\n'data.attributes.hp.value' : newHp\n});",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        },
+        "name": "Wounded",
+        "type": "script",
+        "scope": "global",
+        "command": "let newHp = actor.system.attributes.hp.max + actor.system.attributes.hp.tempmax;\n\nactor.update({\n\"system.attributes.hp.value\" : newHp\n});",
+        "author": "4ft25hP617oXIBoS",
+        "_id": null,
+        "img": "icons/svg/dice-target.svg",
+        "folder": null,
+        "sort": 0,
+        "ownership": {
+          "default": 0
+        },
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    }
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "2.0.3",
+    "coreVersion": "10.288",
+    "createdTime": 1666827410048,
+    "modifiedTime": 1693513535626,
+    "lastModifiedBy": "4ft25hP617oXIBoS"
+  }
+}
