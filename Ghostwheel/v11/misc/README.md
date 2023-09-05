@@ -26,3 +26,8 @@ You do not gain the aegis if you already have a previous aegis affecting you.
 ### Usage 
 Requires: [Effect Macro](https://foundryvtt.com/packages/effectmacro)
 Add the Feature to sheet and roll the item. It will apply two effects, one of them (usually the second) does nothing and can be deleted.
+
+# Generic Template Macro For AeE DoT
+
+### Description
+This is a generic macro for usage with [Template Macro](https://foundryvtt.com/packages/templatemacro), it's made to reproduce the effects of `Create Bonfire` but in a generalized way so that it works with any item type.
