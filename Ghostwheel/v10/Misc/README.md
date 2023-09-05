@@ -47,3 +47,9 @@ Add the Feature to sheet and roll the item. It will apply two effects, one of th
 ### Usage
 Requires: [Effect Macro](https://foundryvtt.com/packages/effectmacro)
 Plug and play. Macro automates the regaining of points.
+
+# Generic Template Macro For AeE DoT
+
+### Description
+This is a generic macro for usage with [Template Macro](https://foundryvtt.com/packages/templatemacro), it's made to reproduce the effects of `Create Bonfire` but in a generalized way so that it works with any item type.
+
