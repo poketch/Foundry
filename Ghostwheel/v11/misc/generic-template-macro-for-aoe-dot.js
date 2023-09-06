@@ -1,5 +1,5 @@
 const item = await fromUuid(template.flags.dnd5e.origin);
-const itemCpy = foundry.utils.duplicate({ ...item, type: "feat" });
+const itemCpy = foundry.utils.duplicate({ ...item, effects: item.effects, type: "feat" });
 delete itemCpy._id;
 
 let damageParts = item.system.damage.parts;
@@ -35,6 +35,7 @@ if (item.type === "spell") {
     setProperty(itemCpy, "system.damage.parts", damageParts);
 }
 
+setProperty(itemCpy, "effects", item.effects);
 setProperty(itemCpy, "system.target", {
     "value": 1,
     "width": null,
