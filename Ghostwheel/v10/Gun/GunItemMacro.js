@@ -111,7 +111,7 @@ if (args[0].macroPass === "postAttackRoll") {
     if (item.getFlag("world", "gw.misfired") === "misfire") {
 
         // change message to reflect misfire, will only work if a misfire actually happened
-        let message = game.messages.filter(i => i.flags['midi-qol']?.workflowId === workflow.uuid).at(-1);
+        let message = game.messages.filter(msg => msg.flags['midi-qol']?.workflowId === workflow.uuid && msg.content.includes("midi-qol-item-card") && msg.content.includes(`${actor.name}`)).last()
         message.content = message.content.replace("badly misses", "misfired against");
 
         item.setFlag("world", "gw.misfired", "okay");
@@ -122,7 +122,7 @@ if (args[0].macroPass === "postAttackRoll") {
 
     } else if (item.getFlag("world", "gw.loaded") === "broken") {
 
-        let message = game.messages.filter(i => i.flags['midi-qol']?.workflowId === workflow.uuid).at(-1);
+        let message = game.messages.filter(msg => msg.flags['midi-qol']?.workflowId === workflow.uuid && msg.content.includes("midi-qol-item-card") && msg.content.includes(`${actor.name}`)).last()
         message.content = message.content.replace("badly misses", `breaks ${item.name} misfiring against`);
     }
 
