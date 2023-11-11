@@ -1,0 +1,190 @@
+{
+  "folder": "PUYnJQZw3kIQIDOE",
+  "name": "Compulsion",
+  "type": "spell",
+  "img": "icons/magic/unholy/hands-circle-light-green.webp",
+  "system": {
+    "description": {
+      "value": "<div class=\"rd__b  rd__b--3\"><p>Creatures of your choice that you can see within range and that can hear you must make a Wisdom saving throw. A target automatically succeeds on this saving throw if it can't be @condition[charmed]. On a failed save, a target is affected by this spell. Until the spell ends, you can use a bonus action on each of your turns to designate a direction that is horizontal to you. Each affected target must use as much of its movement as possible to move in that direction on its next turn. It can take its action before it moves. After moving in this way, it can make another Wisdom saving throw to try to end the effect.</p><div class=\"rd__spc-inline-post\"></div><p>A target isn't compelled to move into an obviously deadly hazard, such as a fire or pit, but it will provoke opportunity attacks to move in the designated direction.</p></div>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "PHB",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": "1",
+      "units": "minute"
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 30,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": "",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "wis",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 4,
+    "school": "enc",
+    "components": {
+      "vocal": true,
+      "somatic": true,
+      "material": false,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [
+    {
+      "name": "Compulsion",
+      "icon": "icons/magic/unholy/hands-circle-light-green.webp",
+      "origin": "Actor.GfGpG6QWIFFCTF4O.Item.zQmUkzxGMLJjuSqq",
+      "duration": {
+        "rounds": 1,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "transfer": false,
+      "disabled": false,
+      "_id": "vUhMUZy62BxaHU1W",
+      "changes": [],
+      "description": "",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        }
+      }
+    }
+  ],
+  "flags": {
+    "plutonium": {
+      "page": "spells.html",
+      "source": "PHB",
+      "hash": "compulsion_phb",
+      "propDroppable": "spell"
+    },
+    "midiProperties": {
+      "magicdam": true,
+      "magiceffect": true,
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "rollOther": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "concentration": true,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false
+    },
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault"
+    },
+    "custom-character-sheet-sections": {
+      "sectionName": ""
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[preActiveEffects]ItemMacro"
+    },
+    "exportSource": {
+      "world": "gwgw-white-room",
+      "system": "dnd5e",
+      "coreVersion": "11.315",
+      "systemVersion": "2.3.1"
+    },
+    "core": {},
+    "dae": {
+      "macro": {
+        "name": "Compulsion",
+        "img": "icons/magic/unholy/hands-circle-light-green.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "targetCondition = \"charmed\";\nconst targets = args[0].macroPass === \"preActiveEffects\" ? [...workflow.targets] : token;\n\n\nconst immuneTargets = [...workflow.failedSaves].filter(t => t.actor?.system?.traits?.ci?.value?.has(targetCondition));\nif (immuneTargets.length > 0) {\n\n    const failedSaves = [...workflow.failedSaves].filter(t => !immuneTargets.includes(t));\n    const saves = [...workflow.saves].concat(immuneTargets);\n\n    setProperty(workflow, \"saves\", new Set(saves));\n    setProperty(workflow, \"failedSaves\", new Set(failedSaves));\n\n    const messages = [...game.messages].filter(m => m.speaker.alias === actor.name);\n    const message = messages[messages.length - 1];\n    const newContent = message.content.split(\"fails\").map(s => {\n        if (immune.some(name => s.includes(name))) {\n            s = s.replace(\"red\", \"green\");\n            s += \"succeeds\";\n        }\n        return s;\n    }).reduce((acc, curr) => {\n\n        if (acc.endsWith(\"succeeds\")) {\n            return acc + curr\n        } else {\n            return acc + \"fails\" + curr\n        }\n    });\n\n     await message.update({\"content\": newContent});\n}\n\nconst featureData = {\n    \"name\": \"Compel\",\n    \"type\": \"feat\",\n    \"_id\": \"X460Yioqt2db5KLz\",\n    \"img\": \"icons/magic/unholy/hands-circle-light-green.webp\",\n    \"system\": {\n        \"description\": {\n            \"value\": \"\",\n            \"chat\": \"\",\n            \"unidentified\": \"\"\n        },\n        \"source\": \"\",\n        \"activation\": {\n            \"type\": \"bonus\",\n            \"cost\": 1,\n            \"condition\": \"\"\n        },\n        \"duration\": {\n            \"value\": \"\",\n            \"units\": \"inst\"\n        },\n        \"cover\": null,\n        \"crewed\": false,\n        \"target\": {\n            \"value\": null,\n            \"width\": null,\n            \"units\": \"\",\n            \"type\": \"\"\n        },\n        \"range\": {\n            \"value\": null,\n            \"long\": null,\n            \"units\": \"\"\n        },\n        \"uses\": {\n            \"value\": null,\n            \"max\": \"\",\n            \"per\": null,\n            \"recovery\": \"\"\n        },\n        \"consume\": {\n            \"type\": \"\",\n            \"target\": null,\n            \"amount\": null\n        },\n        \"ability\": \"\",\n        \"actionType\": \"other\",\n        \"attackBonus\": \"\",\n        \"chatFlavor\": \"\",\n        \"critical\": {\n            \"threshold\": null,\n            \"damage\": \"\"\n        },\n        \"damage\": {\n            \"parts\": [],\n            \"versatile\": \"\"\n        },\n        \"formula\": \"\",\n        \"save\": {\n            \"ability\": \"\",\n            \"dc\": null,\n            \"scaling\": \"spell\"\n        },\n        \"type\": {\n            \"value\": \"\",\n            \"subtype\": \"\"\n        },\n        \"requirements\": \"\",\n        \"recharge\": {\n            \"value\": null,\n            \"charged\": false\n        }\n    },\n    \"effects\": [],\n    \"sort\": 0,\n    \"ownership\": {\n        \"default\": 0,\n        \"I2MAHHn5ZCovi1bW\": 3\n    },\n    \"flags\": {\n        \"midi-qol\": {\n            \"effectActivation\": false,\n            \"onUseMacroName\": \"[preItemRoll]ItemMacro\"\n        },\n        \"midiProperties\": {\n            \"nodam\": false,\n            \"fulldam\": false,\n            \"halfdam\": false,\n            \"autoFailFriendly\": false,\n            \"autoSaveFriendly\": false,\n            \"rollOther\": false,\n            \"critOther\": false,\n            \"offHandWeapon\": false,\n            \"magicdam\": false,\n            \"magiceffect\": false,\n            \"concentration\": false,\n            \"noConcentrationCheck\": false,\n            \"toggleEffect\": false,\n            \"ignoreTotalCover\": false\n        },\n        \"core\": {\n            \"sourceId\": \"Item.NmKSVORwPgiF0Lxw\"\n        },\n        \"dae\": {\n            \"macro\": {\n                \"name\": \"Compel\",\n                \"img\": \"icons/magic/unholy/hands-circle-light-green.webp\",\n                \"type\": \"script\",\n                \"scope\": \"global\",\n                \"command\": \"const targets = canvas.tokens.placeables.filter(t => t.actor.effects.getName(\\\"Compulsion\\\"));\\n\\nconst spellAbility = \\\"wis\\\";\\nconst spellDC = args[0].macroPass === \\\"preActiveEffects\\\" ? actor?.system?.attributes?.spelldc : item?.parent?.system?.attributes?.spelldc;\\n\\nconst itemData = item.clone(\\n    {\\n        name: item.name,\\n        type: \\\"weapon\\\",\\n        effects: [],\\n        flags: {\\n            \\\"midi-qol\\\": {\\n                noProvokeReaction: true,\\n                onUseMacroName: null,\\n                forceCEOff: true\\n            }\\n        },\\n        system: {\\n            equipped: true,\\n            actionType: \\\"save\\\",\\n            save: { dc: spellDC, ability: spellAbility, scaling: \\\"flat\\\" },\\n            \\\"target.type\\\": null,\\n            components: { concentration: false },\\n            duration: { units: \\\"inst\\\", value: undefined },\\n            weaponType: \\\"improv\\\",\\n        },\\n    },\\n    { keepId: false }\\n);\\n\\nsetProperty(itemData.system.target, \\\"type\\\", null);\\nsetProperty(itemData.flags, \\\"autoanimations.killAnim\\\", true);\\nconst itemUpdate = new CONFIG.Item.documentClass(itemData, { parent: actor });\\nconst options = { showFullCard: false, createWorkflow: true, versatile: false, configureDialog: false, targetUuids: targets.map(t => t.document.uuid)};\\n\\nconst saveResult = await MidiQOL.completeItemUse(itemUpdate, {}, options);\\nconst remove = Array.from(saveResult.saves);\\nremove.forEach(async t => await t.actor.deleteEmbeddedDocuments(\\\"ActiveEffect\\\", [t.actor.effects.getName(\\\"Compulsion\\\").id]));\\nreturn false;\",\n                \"author\": \"I2MAHHn5ZCovi1bW\",\n                \"ownership\": {\n                    \"default\": 3\n                },\n                \"_id\": null,\n                \"folder\": null,\n                \"sort\": 0,\n                \"flags\": {},\n                \"_stats\": {\n                    \"systemId\": null,\n                    \"systemVersion\": null,\n                    \"coreVersion\": null,\n                    \"createdTime\": null,\n                    \"modifiedTime\": null,\n                    \"lastModifiedBy\": null\n                }\n            }\n        }\n    },\n    \"_stats\": {\n        \"systemId\": \"dnd5e\",\n        \"systemVersion\": \"2.3.1\",\n        \"coreVersion\": \"11.315\",\n        \"createdTime\": 1699707925343,\n        \"modifiedTime\": 1699724472471,\n        \"lastModifiedBy\": \"I2MAHHn5ZCovi1bW\"\n    }\n}\n\nasync function effectMacroDelete() {\n    await warpgate.revert(token.document, 'Compulsion');\n}\n\nlet targetToken = workflow.token;\nlet effectData = {\n    'label': \"Compelling Aura\",\n    'icon': workflow.item.img,\n    'duration': {\n        \"rounds\": 10,\n    },\n    'origin': workflow.item.uuid,\n    'flags': {\n        'effectmacro': {\n            'onDelete': {\n                'script': `(${effectMacroDelete})()`\n            }\n        },\n    }\n};\nlet updates = {\n    'embedded': {\n        'Item': {\n            [featureData.name]: featureData\n        },\n        'ActiveEffect': {\n            [effectData.label]: effectData\n        }\n    }\n};\nlet options = {\n    'permanent': false,\n    'name': \"Compulsion\",\n    'description': \"Compulsion\"\n};\nawait warpgate.mutate(targetToken.document, updates, {}, options);",
+        "author": "I2MAHHn5ZCovi1bW",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    }
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "2.3.1",
+    "coreVersion": "11.315",
+    "createdTime": 1698180297218,
+    "modifiedTime": 1699736635481,
+    "lastModifiedBy": "I2MAHHn5ZCovi1bW"
+  }
+}
