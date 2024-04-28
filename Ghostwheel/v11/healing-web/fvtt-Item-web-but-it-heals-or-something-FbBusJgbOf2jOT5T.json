@@ -1,0 +1,192 @@
+{
+  "name": "Web but it heals or something",
+  "type": "feat",
+  "system": {
+    "description": {
+      "value": "",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": "1",
+      "units": "minute"
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": 20,
+      "width": null,
+      "units": "ft",
+      "type": "square"
+    },
+    "range": {
+      "value": 60,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": "",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "type": {
+      "value": "",
+      "subtype": ""
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "img": "icons/svg/item-bag.svg",
+  "effects": [
+    {
+      "name": "Web but it heals or something",
+      "icon": "icons/svg/item-bag.svg",
+      "origin": "Actor.GfGpG6QWIFFCTF4O.Item.n68XMQJ4UdmZJtRv",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "transfer": false,
+      "disabled": false,
+      "_id": "KDc9XpKKTKiqajRn",
+      "changes": [
+        {
+          "key": "system.attributes.ac.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": 20
+        },
+        {
+          "key": "system.abilities.dex.bonuses.save",
+          "mode": 2,
+          "value": "2",
+          "priority": 20
+        }
+      ],
+      "description": "",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": true
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "effectmacro": {
+          "onTurnStart": {
+            "script": "const level = actor.system.details.level;\n\nif (level > actor.system.attributes.hp.temp)\n{\n  await actor.update({'system.attributes.hp.temp': level});\n}"
+          }
+        }
+      },
+      "tint": null
+    }
+  ],
+  "folder": "z34U4nRiTuQJV4j4",
+  "flags": {
+    "midi-qol": {
+      "effectActivation": false,
+      "AoETargetType": "ally",
+      "AoETargetTypeIncludeSelf": true,
+      "autoTarget": "default",
+      "rollAttackPerTarget": "default",
+      "itemCondition": "",
+      "effectCondition": ""
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "rollOther": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false,
+      "confirmTargets": "default"
+    },
+    "templatemacro": {
+      "whenCreated": {
+        "asGM": true,
+        "command": "const targets = Array.from(template.user.targets);\nconst effect = Array.from((await fromUuid(template.getFlag('dnd5e' , 'origin'))).effects)[0];\n\nfor (const target of targets)\n{\n  await target.actor.createEmbeddedDocuments('ActiveEffect', [effect]);\n}"
+      },
+      "whenDeleted": {
+        "asGM": true,
+        "command": "const effectName = Array.from((await fromUuid(template.getFlag('dnd5e' , 'origin'))).effects)[0].name;\n\nfor (const actor of game.actors)\n{\n  const eff = await actor.effects.getName(effectName);\n  if (!eff) return;\n  await actor.deleteEmbeddedDocuments('ActiveEffect', [eff.id]);\n}\n "
+      },
+      "whenEntered": {
+        "asGM": true,
+        "command": "const effect = Array.from((await fromUuid(template.getFlag('dnd5e' , 'origin'))).effects)[0];\n\nif (token.document.disposition === 1)\n{\n  await token.actor.createEmbeddedDocuments('ActiveEffect', [effect]);\n}"
+      },
+      "whenLeft": {
+        "asGM": true,
+        "command": "const effectName = Array.from((await fromUuid(template.getFlag('dnd5e' , 'origin'))).effects)[0].name;\n\nconst eff = token.actor.effects.getName(effectName);\nif (!eff) return;\nawait token.actor.deleteEmbeddedDocuments('ActiveEffect', [eff.id]);"
+      }
+    },
+    "core": {},
+    "exportSource": {
+      "world": "gwgw-white-room",
+      "system": "dnd5e",
+      "coreVersion": "11.315",
+      "systemVersion": "2.3.1"
+    }
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "2.3.1",
+    "coreVersion": "11.315",
+    "createdTime": 1714272321544,
+    "modifiedTime": 1714279319400,
+    "lastModifiedBy": "I2MAHHn5ZCovi1bW"
+  }
+}
