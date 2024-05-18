@@ -1,15 +1,16 @@
 {
-  "folder": "sQ6E5ZlEZEURE64q",
+  "folder": "kQJQ8aoaoLMc6tRs",
   "name": "Wounded",
   "type": "feat",
   "img": "icons/skills/wounds/injury-triple-slash-bleed.webp",
   "system": {
     "description": {
       "value": "<p>Whenever you drop to 0 hit points, you gain a stack of Wounded. Each stack of this condition reduces your maximum health by an amount equal to twice your level.</p>\n<p>In addition, you gain the <a href=\"https://docs.google.com/document/d/1kdqHLKMueyz6GvnSPi74KK60i94BidXnq03Sliuh8iY/edit?usp=sharing\" target=\"_blank\" rel=\"noopener\">dying</a> condition.</p>",
-      "chat": "",
-      "unidentified": ""
+      "chat": ""
     },
-    "source": "",
+    "source": {
+      "custom": ""
+    },
     "activation": {
       "type": "special",
       "cost": null,
@@ -25,7 +26,8 @@
       "value": null,
       "width": null,
       "units": "",
-      "type": "self"
+      "type": "self",
+      "prompt": true
     },
     "range": {
       "value": null,
@@ -36,16 +38,21 @@
       "value": 20,
       "max": "20",
       "per": "lr",
-      "recovery": ""
+      "recovery": "",
+      "prompt": true
     },
     "consume": {
       "type": "",
       "target": "",
-      "amount": null
+      "amount": null,
+      "scale": false
     },
     "ability": "",
     "actionType": "other",
-    "attackBonus": "",
+    "attack": {
+      "bonus": "",
+      "flat": false
+    },
     "chatFlavor": "",
     "critical": {
       "threshold": null,
@@ -61,10 +68,12 @@
       "dc": null,
       "scaling": "spell"
     },
+    "summons": null,
     "type": {
       "value": "",
       "subtype": ""
     },
+    "properties": [],
     "requirements": "",
     "recharge": {
       "value": null,
@@ -154,6 +163,12 @@
           "mode": 2,
           "value": "1",
           "priority": 20
+        },
+        {
+          "key": "system.attributes.hp.tempmax",
+          "mode": 2,
+          "value": "(@item.uses.max - @item.uses.value) * @details.level * 2",
+          "priority": 20
         }
       ],
       "disabled": false,
@@ -177,7 +192,10 @@
           "macroRepeat": "none",
           "specialDuration": [],
           "transfer": false,
-          "selfTargetAlways": false
+          "selfTargetAlways": false,
+          "disableIncapacitated": false,
+          "dontApply": false,
+          "showIcon": false
         },
         "core": {
           "statusId": "Dying"
@@ -232,7 +250,11 @@
       "effectActivation": false,
       "forceCEOff": true,
       "onUseMacroName": "[postActiveEffects]ItemMacro",
-      "fumbleThreshold": null
+      "fumbleThreshold": null,
+      "rollAttackPerTarget": "default",
+      "forceCEOn": false,
+      "itemCondition": "",
+      "effectCondition": ""
     },
     "midiProperties": {
       "nodam": false,
@@ -247,14 +269,16 @@
       "ignoreTotalCover": false,
       "autoFailFriendly": false,
       "offHandWeapon": false,
-      "autoSaveFriendly": false
+      "autoSaveFriendly": false,
+      "confirmTargets": "default",
+      "noConcentrationCheck": false
     },
     "core": {},
     "exportSource": {
-      "world": "ddf-friends-characters",
+      "world": "gwgw-white-room",
       "system": "dnd5e",
-      "coreVersion": "11.308",
-      "systemVersion": "2.3.1"
+      "coreVersion": "11.315",
+      "systemVersion": "3.1.2"
     },
     "itemacro": {
       "macro": {
@@ -295,14 +319,18 @@
           "lastModifiedBy": null
         }
       }
+    },
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault"
     }
   },
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "2.0.3",
-    "coreVersion": "10.288",
+    "systemVersion": "3.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1666827410048,
-    "modifiedTime": 1693513535626,
-    "lastModifiedBy": "4ft25hP617oXIBoS"
+    "modifiedTime": 1716040304602,
+    "lastModifiedBy": "I2MAHHn5ZCovi1bW"
   }
 }
