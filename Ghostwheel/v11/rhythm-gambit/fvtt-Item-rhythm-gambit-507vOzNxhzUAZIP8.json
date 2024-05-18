@@ -1,0 +1,239 @@
+{
+  "folder": "HiiWlSS3p7nOeKm3",
+  "name": "Rhythm Gambit",
+  "type": "feat",
+  "img": "systems/dnd5e/icons/svg/items/feature.svg",
+  "system": {
+    "description": {
+      "value": "<p><span style=\"font-family:'gg sans', 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif\">Beginning at 7th level, if you attack with a melee weapon that would deal damage on a successful hit, you may choose to grant yourself advantage on the attack roll. If you do so, you deal no damage and cause no additional effects on the hit (as though you had missed your target), but instead apply one stack of Rhythm Gambit to the target. These stacks remain on the target until the end of your next turn, at which point all stacks disappear regardless of when they were applied. If a creature has at least one stack of Rhythm Gambit applied to it at the start of your turn, you add twice your proficiency bonus to damage with melee weapon attacks made against that creature for each stack applied. If you apply a stack of Rhythm Gambit to a creature while another creature has stacks of Rhythm Gambit applied to it, the stacks on the first creature immediately disappear</span></p>",
+      "chat": ""
+    },
+    "source": {},
+    "activation": {
+      "type": "special",
+      "cost": null,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": "inst"
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature",
+      "prompt": true
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": "",
+      "prompt": true
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null,
+      "scale": false
+    },
+    "ability": "",
+    "actionType": "mwak",
+    "attack": {
+      "bonus": "",
+      "flat": false
+    },
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "summons": null,
+    "type": {
+      "value": "class",
+      "subtype": ""
+    },
+    "properties": [],
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [
+    {
+      "name": "Rhythm Gambit",
+      "icon": "systems/dnd5e/icons/svg/items/feature.svg",
+      "origin": "Actor.GfGpG6QWIFFCTF4O.Item.L6LJIKIDALqiie50",
+      "duration": {
+        "rounds": 100,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "7Xp7UtPf9tUP3STZ",
+      "changes": [],
+      "description": "",
+      "transfer": false,
+      "statuses": [],
+      "flags": {
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "stackable": "count",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "effectmacro": {
+          "onCreate": {
+            "script": "const actors = scene.tokens.filter(t => t != token.document).map(t => t.actor);\n\nfor (const a of actors) {\n\n    const eff = a.effects.filter(e => e.name.startsWith(origin.name)).map(e => e.id);\n    await a.deleteEmbeddedDocuments(\"ActiveEffect\", eff);\n}\n\nif (!game.combat) return;\n\nif (parseInt(effect.name.split('(')[1], 10) > 1)\n{\n  actor.setFlag(\"world\", \"gwgw.gambit.active\", actor.getFlag(\"world\", \"gwgw.gambit.history\"));\n  return;\n}\n\nactor.setFlag(\"world\", \"gwgw.gambit.active\", false);"
+          },
+          "onDelete": {
+            "script": "actor.setFlag(\"world\", \"gwgw.gambit.history\", actor.getFlag(\"world\", \"gwgw.gambit.active\"));\nactor.unsetFlag(\"world\", \"gwgw.gambit.active\");"
+          },
+          "onEachTurn": {
+            "script": "const uuids = game.combat.combatants.filter(c => c.id === game.combat.current.combatantId).map(c => c.actor.items)[0].map(i=> i.uuid);\n\nif (uuids.includes(origin.uuid)) \n{\n    actor.setFlag(\"world\", \"gwgw.gambit.active\", true);\n}\n\nconst prevUuids = game.combat.combatants.filter(c => c.id === game.combat.previous.combatantId).map(c => c.actor.items)[0].map(i=> i.uuid);\n\nif (prevUuids.includes(origin.uuid) && actor.getFlag(\"world\", \"gwgw.gambit.active\"))\n{\nconst effId = actor.effects.filter(e => e.name.startsWith(origin.name)).map(e => e.id);\n\nawait actor.deleteEmbeddedDocuments(\"ActiveEffect\", effId);\n\n}\n\n"
+          }
+        }
+      },
+      "tint": null
+    },
+    {
+      "name": "Rhythm Gambit",
+      "icon": "systems/dnd5e/icons/svg/items/feature.svg",
+      "origin": "Actor.GfGpG6QWIFFCTF4O.Item.L6LJIKIDALqiie50",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "zutnOPOvM6j8LoQS",
+      "changes": [
+        {
+          "key": "flags.dnd5e.DamageBonusMacro",
+          "mode": 0,
+          "value": "ItemMacro",
+          "priority": 20
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "effectmacro": {
+          "dnd5e": {}
+        }
+      },
+      "tint": null
+    }
+  ],
+  "flags": {
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault"
+    },
+    "midiProperties": {
+      "confirmTargets": "default",
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false
+    },
+    "midi-qol": {
+      "rollAttackPerTarget": "default",
+      "itemCondition": "",
+      "effectCondition": "",
+      "onUseMacroName": "[preCheckHits]ItemMacro",
+      "fumbleThreshold": null,
+      "removeAttackDamageButtons": "default"
+    },
+    "dae": {
+      "macro": {
+        "name": "Rhythm Gambit",
+        "img": "systems/dnd5e/icons/svg/items/feature.svg",
+        "type": "script",
+        "scope": "global",
+        "command": "const arg = args[0];\n\nif (arg.macroPass === \"DamageBonus\")\n{\n\n    if (workflow.item.system.actionType != \"mwak\") return {};\n    const targets = [...workflow.targets];\n    \n    const eff = await actor.appliedEffects.filter(e => e.name === this.name)[0];\n    const teffName = (await fromUuid(eff.origin)).effects.filter(e => e.duration.rounds)[0].name;\n\n    const target = targets.filter(t => [...t.actor.effects].some(e => e.name.startsWith(teffName)));\n    if (target.length != 1) return;\n    if (!workflow.hitTargets.has(target[0])) return;\n\n    const tactor = target[0].actor;\n    if (!tactor.getFlag(\"world\", \"gwgw.gambit.active\")) return;\n    \n    const diceNumber = parseInt(tactor.effects.filter(e => e.name.startsWith(teffName))[0].name.split('(')[1], 10);\n\n    const bonus = `${diceNumber}*${actor.system.attributes.prof}*2`;\n\n    return {damageRoll: bonus, flavor: `${teffName}`}\n}\n \n\nconst roll = workflow.attackRoll;\nconst newRoll = await new Roll(roll.formula.replace('1d20', '2d20kh')).evaluate({async:true});\nworkflow.setAttackRoll(newRoll);",
+        "author": "I2MAHHn5ZCovi1bW",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    },
+    "core": {},
+    "exportSource": {
+      "world": "gwgw-white-room",
+      "system": "dnd5e",
+      "coreVersion": "11.315",
+      "systemVersion": "3.1.2"
+    }
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1716040542295,
+    "modifiedTime": 1716064026574,
+    "lastModifiedBy": "I2MAHHn5ZCovi1bW"
+  }
+}
