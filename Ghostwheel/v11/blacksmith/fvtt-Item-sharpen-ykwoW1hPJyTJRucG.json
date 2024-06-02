@@ -160,7 +160,7 @@
         "img": "systems/dnd5e/icons/svg/items/feature.svg",
         "type": "script",
         "scope": "global",
-        "command": "const arg = args[0];\n\nif (arg.macroPass === \"DamageBonus\") \n{\n    const source = game.actors.filter(a => a.items.getName(this.name))[0];\n    const eff = [...source.items.getName(this.name).effects][0];\n    const aEff = actor.effects.filter(e => e.name.startsWith(eff.name))[0];\n    \n    const stacks = parseInt(aEff.name.split('(')[1], 10);\n    \n    if (stacks === 1) \n    {\n        await actor.deleteEmbeddedDocuments('ActiveEffect', [aEff.id]);\n        return;\n    }\n    \n    aEff.name = `${aEff.name.split('(')[0]}(${stacks-1})`\n    \n    await actor.updateEmbeddedDocuments('ActiveEffect', [aEff]);\n\n\n    return;\n}\n\n\n    const target = workflow.targets.first().actor\n    const eff = [...item.effects][0];\n    await target.createEmbeddedDocuments('ActiveEffect', [eff]);\n    \n    const aEff = target.effects.getName(eff.name);\n    aEff.name = `${eff.name}(3)`;\n    \n    await target.updateEmbeddedDocuments('ActiveEffect', [aEff]);",
+        "command": "const arg = args[0];\n\nif (arg.macroPass === \"DamageBonus\") \n{\n    const source = game.actors.filter(a => a.items.getName(this.name))[0];\n    const eff = [...source.items.getName(this.name).effects][0];\n    const aEff = actor.effects.filter(e => e.name.startsWith(eff.name))[0];\n    \n    const stacks = parseInt(aEff.name.split('(')[1], 10);\n    \n    if (stacks === 1) \n    {\n        await actor.deleteEmbeddedDocuments('ActiveEffect', [aEff.id]);\n        return;\n    }\n    \n    await aEff.update({'name': `${aEff.name.split('(')[0]}(${stacks-1})`});\n\n    return;\n}\n\n\n    const target = workflow.targets.first().actor\n    const eff = [...item.effects][0];\n    await target.createEmbeddedDocuments('ActiveEffect', [eff]);\n    \n    const aEff = target.effects.getName(eff.name);\n    \n    \n    await aEff.update({'name':`${eff.name}(3)`});",
         "author": "I2MAHHn5ZCovi1bW",
         "ownership": {
           "default": 3
@@ -192,7 +192,7 @@
     "systemVersion": "3.1.2",
     "coreVersion": "11.315",
     "createdTime": 1716207186589,
-    "modifiedTime": 1716415224113,
+    "modifiedTime": 1717339700884,
     "lastModifiedBy": "I2MAHHn5ZCovi1bW"
   }
 }
