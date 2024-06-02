@@ -1,0 +1,216 @@
+{
+  "name": "Gun II",
+  "type": "weapon",
+  "img": "systems/dnd5e/icons/svg/items/weapon.svg",
+  "system": {
+    "description": {
+      "value": "",
+      "chat": ""
+    },
+    "source": {},
+    "identified": true,
+    "unidentified": {
+      "description": ""
+    },
+    "container": null,
+    "quantity": 1,
+    "weight": 0,
+    "price": {
+      "value": 0,
+      "denomination": "gp"
+    },
+    "rarity": "",
+    "attunement": 0,
+    "equipped": true,
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": ""
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature",
+      "prompt": true
+    },
+    "range": {
+      "value": 100,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": "",
+      "prompt": true
+    },
+    "consume": {
+      "type": "ammo",
+      "target": "T98wx1crgquLG884",
+      "amount": 1,
+      "scale": false
+    },
+    "ability": "",
+    "actionType": "rwak",
+    "attack": {
+      "bonus": "",
+      "flat": false
+    },
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "2d8 + @mod",
+          "piercing"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "summons": null,
+    "armor": {
+      "value": null
+    },
+    "hp": {
+      "value": null,
+      "max": null,
+      "dt": null,
+      "conditions": ""
+    },
+    "type": {
+      "value": "martialR",
+      "baseItem": ""
+    },
+    "magicalBonus": null,
+    "properties": [
+      "amm",
+      "fir",
+      "lod",
+      "rel",
+      "spc"
+    ],
+    "proficient": 1
+  },
+  "effects": [
+    {
+      "name": "Gun II",
+      "icon": "systems/dnd5e/icons/svg/items/weapon.svg",
+      "origin": "Actor.GfGpG6QWIFFCTF4O.Item.6CGVCydeW71J0uKf",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "woZlcFvLFyMu41yJ",
+      "changes": [],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        }
+      },
+      "tint": null
+    }
+  ],
+  "folder": "u0kdcdWLzJYY26Sz",
+  "flags": {
+    "midiProperties": {
+      "confirmTargets": "default",
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false
+    },
+    "midi-qol": {
+      "rollAttackPerTarget": "default",
+      "itemCondition": "",
+      "effectCondition": "",
+      "fumbleThreshold": 5,
+      "removeAttackDamageButtons": "default",
+      "onUseMacroName": "[preCheckHits]ItemMacro,[preItemRoll]ItemMacro"
+    },
+    "core": {},
+    "dae": {
+      "macro": {
+        "name": "Gun II",
+        "img": "systems/dnd5e/icons/svg/items/weapon.svg",
+        "type": "script",
+        "scope": "global",
+        "command": "const lastArg = args[0];\nconst macroPass = lastArg.macroPass;\n\nswitch (macroPass) {\n    case \"preItemRoll\":\n        return reload();\n        break;\n    case \"preCheckHits\":\n        await adv();\n        await fumble();\n        break;\n}\n\nfunction reload() {\n\n    if (item.name.includes(\"Busted\")) {\n        if (item.getFlag(\"world\", \"gwgw.busted\")) {\n\n            ChatMessage.create({\n                speaker: {\n                    alias: actor.name\n                },\n                content:\n                    `<p style=\"text-align: center;font-style:italic;font-size: 16px\">\n                ${actor.name}'s ${item.name} is busted and can't be fired...\n            </p>`\n            });\n            return false;\n\n        }\n    } else {\n        item.unsetFlag(\"world\", \"gwgw.busted\");\n    }\n\n    if (item.getFlag(\"world\", \"gwgw.loaded\")) {\n        item.unsetFlag(\"world\", \"gwgw.loaded\");\n        return;\n    }\n\n    const effectName = [...item.effects][0].name;\n    const eff = [...actor.allApplicableEffects()].filter(e => e.name === effectName)[0];\n\n    if (!eff.disabled) {\n        item.unsetFlag(\"world\", \"gwgw.misfired\");\n    }\n\n    item.setFlag(\"world\", \"gwgw.loaded\", true);\n    ChatMessage.create({\n        speaker: {\n            alias: actor.name\n        },\n        content:\n            `<p style=\"text-align: center;font-style:italic;font-size: 16px\">\n                ${actor.name} reloaded their ${item.name}\n            </p>`\n    });\n\n    return false;\n}\n\nasync function adv() {\n    const effectName = [...item.effects][0].name;\n    const eff = [...actor.allApplicableEffects()].filter(e => e.name === effectName)[0];\n\n    if (eff.disabled) return;\n    const roll = workflow.attackRoll.formula;\n    const newRoll = await new Roll(roll.replace(\"1d20\", \"2d20kh\")).evaluate({ async: true });\n    await workflow.setAttackRoll(newRoll);\n    return;\n}\n\nasync function fumble() {\n    let misfireThreshold = item.flags['midi-qol'].fumbleThreshold ?? 1;\n    console.log(misfireThreshold);\n\n\n    const ammo = await fromUuid(`${actor.uuid}.Item.${item.system.consume.target}`)\n    if (ammo.flags['midi-qol'].fumbleThreshold !== null && ammo.flags['midi-qol'].fumbleThreshold !== undefined) {\n        misfireThreshold += ammo.flags['midi-qol'].fumbleThreshold;\n    }\n\n    const roll = workflow.attackRoll;\n    const misFires = roll.dice[0].results.map(obj => obj.result <= misfireThreshold);\n\n    if (misFires.includes(true)) {\n\n        await workflow.setAttackRoll(await new Roll('1').evaluate());\n        setProperty(workflow, \"isFumble\", true);\n        setProperty(workflow, \"attackRollHTML\", await MidiQOL.midiRenderRoll(roll));\n\n        if (item.getFlag(\"world\", \"gwgw.misfired\")) {\n            item.unsetFlag(\"world\", \"gwgw.misfired\");\n            item.setFlag(\"world\", \"gwgw.busted\", true);\n            ChatMessage.create({\n                speaker: {\n                    alias: actor.name\n                },\n                content:\n                    `<p style=\"text-align: center;font-style:italic;font-size: 16px\">\n                ${actor.name} fired their jammed ${item.name} and busted it!\n                </p>`\n            });\n            await item.update({ 'name': `Busted ${item.name}` });\n        }\n        else {\n            item.setFlag(\"world\", \"gwgw.misfired\", true);\n\n            const effectName = [...item.effects][0].name;\n            const eff = [...actor.allApplicableEffects()].filter(e => e.name === effectName)[0];\n\n            await eff.update({ 'disabled': true })\n\n            ChatMessage.create({\n                speaker: {\n                    alias: actor.name\n                },\n                content:\n                    `<p style=\"text-align: center;font-style:italic;font-size: 16px\">\n                ${actor.name}'s ${item.name} misfired!\n            </p>`\n            });\n        }\n    }\n}",
+        "author": "I2MAHHn5ZCovi1bW",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    },
+    "world": {
+      "gwgw": {
+        "loaded": true
+      }
+    },
+    "exportSource": {
+      "world": "gwgw-white-room",
+      "system": "dnd5e",
+      "coreVersion": "11.315",
+      "systemVersion": "3.1.2"
+    }
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1717296910730,
+    "modifiedTime": 1717308885872,
+    "lastModifiedBy": "I2MAHHn5ZCovi1bW"
+  }
+}
