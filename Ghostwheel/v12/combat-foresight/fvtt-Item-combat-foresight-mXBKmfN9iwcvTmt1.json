@@ -1,0 +1,177 @@
+{
+  "name": "Combat Foresight",
+  "type": "spell",
+  "img": "icons/PoE-Icons/Passive-Icons/120px-Minddrinker_passive_skill_icon.png",
+  "system": {
+    "description": {
+      "value": "<p>You can cast this spell as a bonus action. For the next minute, when you are attacked you can spend a reaction to cause the attack made against you to have disadvantage.</p>",
+      "chat": ""
+    },
+    "source": {
+      "custom": ""
+    },
+    "activation": {
+      "type": "bonus",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": "1",
+      "units": "minute"
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": "",
+      "width": null,
+      "units": "",
+      "type": "self",
+      "prompt": true
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 2,
+      "max": "2",
+      "per": "lr",
+      "recovery": "",
+      "prompt": true
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null,
+      "scale": false
+    },
+    "ability": null,
+    "actionType": "",
+    "attack": {
+      "bonus": "",
+      "flat": false
+    },
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "summons": null,
+    "level": 1,
+    "school": "",
+    "properties": [
+      "concentration",
+      "mgc"
+    ],
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "innate",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    },
+    "enchantment": null,
+    "sourceClass": ""
+  },
+  "effects": [],
+  "folder": "MhG7ob9CB2DbWIKj",
+  "flags": {
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault",
+      "hideBorder": "globalDefault",
+      "hideHighlighting": "globalDefault",
+      "showOnHover": "globalDefault",
+      "noAutotarget": false,
+      "addTokenSize": false,
+      "attachToken": "na"
+    },
+    "custom-character-sheet-sections": {
+      "sectionName": ""
+    },
+    "midiProperties": {
+      "confirmTargets": "default",
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
+    },
+    "midi-qol": {
+      "rollAttackPerTarget": "default",
+      "itemCondition": "",
+      "effectCondition": "",
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
+    },
+    "dae": {
+      "macro": {
+        "name": "Combat Foresight",
+        "img": "icons/PoE-Icons/Passive-Icons/120px-Minddrinker_passive_skill_icon.png",
+        "type": "script",
+        "scope": "global",
+        "command": "const EFFECT_NAME = \"Combat Foresight\";\n\nconst itemUtils = chrisPremades.utils.itemUtils;\nconst effectUtils = chrisPremades.utils.effectUtils;\nconst genericUtils = chrisPremades.utils.genericUtils;\n\nif (actor.effects.filter(ef => ef.label === EFFECT_NAME).length !== 0) { return; }\n\nconst featureData = {\n  \"name\": \"Foresee Danger\",\n  \"type\": \"feat\",\n  \"img\": \"icons/PoE-Icons/Passive-Icons/120px-AcrobaticWillpower_(Trickster)_passive_skill_icon.png\",\n  \"system\": {\n    \"description\": {\n      \"value\": \"<p>When you would be attacked, you can spend a reaction to impose disadvantage on that attack.</p>\",\n      \"chat\": \"\"\n    },\n    \"source\": {},\n    \"activation\": {\n      \"type\": \"reactionpreattack\",\n      \"cost\": 1,\n      \"condition\": \"\"\n    },\n    \"duration\": {\n      \"value\": \"\",\n      \"units\": \"spec\"\n    },\n    \"cover\": null,\n    \"crewed\": false,\n    \"target\": {\n      \"value\": null,\n      \"width\": null,\n      \"units\": \"\",\n      \"type\": \"self\",\n      \"prompt\": true\n    },\n    \"range\": {\n      \"value\": null,\n      \"long\": null,\n      \"units\": \"\"\n    },\n    \"uses\": {\n      \"value\": null,\n      \"max\": \"\",\n      \"per\": null,\n      \"recovery\": \"\",\n      \"prompt\": true\n    },\n    \"consume\": {\n      \"type\": \"\",\n      \"target\": null,\n      \"amount\": null,\n      \"scale\": false\n    },\n    \"ability\": null,\n    \"actionType\": \"\",\n    \"attack\": {\n      \"bonus\": \"\",\n      \"flat\": false\n    },\n    \"chatFlavor\": \"\",\n    \"critical\": {\n      \"threshold\": null,\n      \"damage\": \"\"\n    },\n    \"damage\": {\n      \"parts\": [],\n      \"versatile\": \"\"\n    },\n    \"formula\": \"\",\n    \"save\": {\n      \"ability\": \"\",\n      \"dc\": null,\n      \"scaling\": \"spell\"\n    },\n    \"summons\": null,\n    \"type\": {\n      \"value\": \"\",\n      \"subtype\": \"\"\n    },\n    \"properties\": [],\n    \"requirements\": \"\",\n    \"recharge\": {\n      \"value\": null,\n      \"charged\": false\n    }\n  },\n  \"effects\": [\n    {\n      \"name\": \"Foresee Danger\",\n      \"icon\": \"icons/PoE-Icons/Passive-Icons/120px-AcrobaticWillpower_(Trickster)_passive_skill_icon.png\",\n      \"origin\": \"Item.wygjnHcoarSsQubH\",\n      \"duration\": {\n        \"rounds\": null,\n        \"startTime\": null,\n        \"seconds\": null,\n        \"combat\": null,\n        \"turns\": 1,\n        \"startRound\": null,\n        \"startTurn\": null\n      },\n      \"disabled\": false,\n      \"_id\": \"djwZ2ovC4naSweys\",\n      \"changes\": [\n        {\n          \"key\": \"flags.midi-qol.grants.disadvantage.attack.all\",\n          \"mode\": 0,\n          \"value\": \"1\",\n          \"priority\": 20\n        }\n      ],\n      \"description\": \"\",\n      \"transfer\": false,\n      \"statuses\": [],\n      \"flags\": {\n        \"dae\": {\n          \"disableIncapacitated\": false,\n          \"selfTarget\": false,\n          \"selfTargetAlways\": true,\n          \"dontApply\": false,\n          \"stackable\": \"noneName\",\n          \"showIcon\": false,\n          \"durationExpression\": \"\",\n          \"macroRepeat\": \"none\",\n          \"specialDuration\": [\n            \"isAttacked\"\n          ]\n        },\n        \"ActiveAuras\": {\n          \"isAura\": false,\n          \"aura\": \"None\",\n          \"nameOverride\": \"\",\n          \"radius\": \"\",\n          \"alignment\": \"\",\n          \"type\": \"\",\n          \"customCheck\": \"\",\n          \"ignoreSelf\": false,\n          \"height\": false,\n          \"hidden\": false,\n          \"displayTemp\": false,\n          \"hostile\": false,\n          \"onlyOnce\": false,\n          \"wallsBlock\": \"system\"\n        }\n      },\n      \"tint\": null\n    }\n  ],\n  \"flags\": {\n    \"walledtemplates\": {\n      \"wallsBlock\": \"globalDefault\",\n      \"wallRestriction\": \"globalDefault\"\n    },\n    \"midiProperties\": {\n      \"confirmTargets\": \"default\",\n      \"autoFailFriendly\": false,\n      \"autoSaveFriendly\": false,\n      \"critOther\": false,\n      \"offHandWeapon\": false,\n      \"magicdam\": false,\n      \"magiceffect\": false,\n      \"noConcentrationCheck\": false,\n      \"toggleEffect\": false,\n      \"ignoreTotalCover\": false\n    },\n    \"midi-qol\": {\n      \"rollAttackPerTarget\": \"default\",\n      \"itemCondition\": \"\",\n      \"effectCondition\": \"\",\n      \"reactionCondition\": \"\"\n    },\n    \"custom-character-sheet-sections\": {\n      \"sectionName\": \"\"\n    },\n    \"exportSource\": {\n      \"world\": \"isekai-kamkariel\",\n      \"system\": \"dnd5e\",\n      \"coreVersion\": \"11.315\",\n      \"systemVersion\": \"3.1.2\"\n    }\n  },\n  \"_stats\": {\n    \"systemId\": \"dnd5e\",\n    \"systemVersion\": \"3.1.2\",\n    \"coreVersion\": \"11.315\",\n    \"createdTime\": 1719068295057,\n    \"modifiedTime\": 1719078308625,\n    \"lastModifiedBy\": \"uIeWZlk10NwP3l74\"\n  }\n}\n\nasync function main(token, workflow) {\n    let concentrationEffect = effectUtils.getConcentrationEffect(workflow.actor, workflow.item);\n    let targetToken = workflow.token;\n    let effectData = {\n        'label': EFFECT_NAME,\n        'icon': workflow.item.img,\n        'disabled': false,\n        'duration': {\n            \"rounds\": 10,\n        },\n        'origin': workflow.item.uuid,\n    };\n\n    let effect = await effectUtils.createEffect(workflow.actor, effectData, {concentrationItem: workflow.item, strictlyInterdependent: true, identifier: 'combatForesight'});\n    await itemUtils.createItems(workflow.actor, [featureData], {favorite: true, parentEntity: effect});\n    if (concentrationEffect) await genericUtils.update(concentrationEffect, {'duration.seconds': effectData.duration.seconds});\n}\n\nawait main(token, workflow)",
+        "author": "I2MAHHn5ZCovi1bW",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "systemId": "dnd5e",
+          "systemVersion": "3.3.1",
+          "coreVersion": "12.331",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "compendiumSource": null,
+          "duplicateSource": null
+        }
+      }
+    },
+    "exportSource": {
+      "world": "gwgw-white-room",
+      "system": "dnd5e",
+      "coreVersion": "12.331",
+      "systemVersion": "3.3.1"
+    },
+    "core": {
+      "sourceId": "Item.b2VuXk65SwaKpgkc"
+    }
+  },
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "3.3.1",
+    "createdTime": 1729340400606,
+    "modifiedTime": 1729340400620,
+    "lastModifiedBy": "I2MAHHn5ZCovi1bW"
+  }
+}
